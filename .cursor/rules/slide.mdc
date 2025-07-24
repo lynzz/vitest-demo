@@ -1,0 +1,186 @@
+---
+description: Slidev 幻灯片制作规则和语法指导
+globs:
+  - "*.md"
+  - "slides/*.md"
+  - "pages/*.md"
+alwaysApply: false
+---
+
+# Slidev 幻灯片制作规则
+
+## 基本语法
+
+### 幻灯片分隔
+- 使用 `---` 来分隔幻灯片
+- 每个 `---` 代表一个新的幻灯片
+
+### YAML Front Matter
+幻灯片开头可以使用 YAML 来配置：
+```yaml
+---
+theme: seriph
+background: https://cover.sli.dev
+title: 演示标题
+class: text-center
+transition: slide-left
+mdc: true
+layout: center
+---
+```
+
+## 幻灯片布局
+
+### 常用布局
+- `default` - 默认布局
+- `center` - 居中布局
+- `two-cols` - 双栏布局
+- `image-right` - 右侧图片布局
+- `image-left` - 左侧图片布局
+- `cover` - 封面布局
+
+### 布局使用示例
+```markdown
+---
+layout: two-cols
+layoutClass: gap-16
+---
+
+# 左侧内容
+
+::right::
+
+# 右侧内容
+```
+
+## 动画和交互
+
+### 点击动画
+- 使用 `v-click` 指令添加点击动画
+- 使用 `v-after` 在前一个动画完成后显示
+- 使用 `v-mark` 添加标记效果
+
+```html
+<div v-click>点击后显示</div>
+<span v-mark.red="2">第二次点击标记为红色</span>
+<p v-after>在上一个动画完成后显示</p>
+```
+
+### 动效
+- 使用 `v-motion` 创建复杂动画
+```html
+<div
+  v-motion
+  :initial="{ x: -80 }"
+  :enter="{ x: 0 }"
+>
+  内容
+</div>
+```
+
+## 代码展示
+
+### 代码高亮
+```ts {all|2|4-6} twoslash
+// 支持 TypeScript 类型提示
+const count = ref(0)
+// 支持行高亮和渐进展示
+const doubled = computed(() => count.value * 2)
+```
+
+### 代码编辑器
+- 使用 `{monaco}` 创建编辑器
+- 使用 `{monaco-run}` 创建可执行编辑器
+
+### Magic Move 动画
+```md magic-move
+// 支持代码块之间的平滑过渡动画
+```
+
+## 组件使用
+
+### 内置组件
+- `<Tweet id="..." />` - 推特嵌入
+- `<Youtube id="..." />` - YouTube 视频
+- `<Toc />` - 目录生成
+- `<Counter />` - 自定义组件
+
+### Vue 组件
+- 可以直接使用 Vue 组件和指令
+- 支持 `<script setup>` 语法
+- 支持组件状态管理
+
+## 数学公式和图表
+
+### LaTeX 支持
+```markdown
+行内公式：$\sqrt{3x-1}+(1+x)^2$
+
+块级公式：
+$$
+\begin{aligned}
+\nabla \cdot \vec{E} &= \frac{\rho}{\varepsilon_0}
+\end{aligned}
+$$
+```
+
+### 图表支持
+- Mermaid 图表
+- PlantUML 图表
+- 支持序列图、流程图、思维导图等
+
+```mermaid
+graph TD
+A[开始] --> B{判断}
+B -->|是| C[结果1]
+B -->|否| D[结果2]
+```
+
+## 主题和样式
+
+### 主题切换
+在 YAML front matter 中指定：
+```yaml
+---
+theme: default  # default, seriph, apple-basic 等
+---
+```
+
+### 自定义样式
+```html
+<style>
+h1 {
+  background: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>
+```
+
+## 最佳实践
+
+1. **文件组织**
+   - 主幻灯片：`slides.md`
+   - 拆分文件：使用 `src: ./path/to/slide.md` 导入
+   - 组件目录：`components/` 存放自定义组件
+
+2. **内容结构**
+   - 每张幻灯片保持简洁
+   - 合理使用动画，避免过度
+   - 代码示例要完整可运行
+
+3. **性能优化**
+   - 图片使用适当尺寸
+   - 避免过多复杂动画
+   - 合理使用懒加载
+
+4. **导入和导出**
+   - 支持导出为 PDF、PNG、SPA
+   - 支持录制和演示模式
+   - 可以嵌入外部代码文件
+
+## 快捷键
+- `Space` / `→` - 下一步/下一张
+- `←` / `Shift+Space` - 上一步/上一张
+- `↑` - 上一张幻灯片
+- `↓` - 下一张幻灯片
