@@ -47,8 +47,8 @@ describe('ContactForm Integration', () => {
 
   test('shows loading state during submission', async () => {
     const user = userEvent.setup();
-    const mockSubmit = vi.fn(() => new Promise(resolve => 
-      setTimeout(resolve, 100)
+    const mockSubmit = vi.fn(() => new Promise<void>(resolve => 
+      setTimeout(() => resolve(), 100)
     ));
     
     render(<ContactForm onSubmit={mockSubmit} />);

@@ -2,6 +2,12 @@ import { describe, test, expect, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import { UserList } from '../UserList'
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
 const mockUsers = [
   { id: 1, name: 'John', email: 'john@test.com' },
   { id: 2, name: 'Jane', email: 'jane@test.com' }
@@ -9,7 +15,7 @@ const mockUsers = [
 
 describe('UserList Component', () => {
   test('shows loading initially', () => {
-    const fetchUsers = vi.fn(() => new Promise(() => {}));
+    const fetchUsers = vi.fn(() => new Promise<User[]>(() => {}));
     render(<UserList fetchUsers={fetchUsers} />);
     
     expect(screen.getByText('Loading...')).toBeInTheDocument();

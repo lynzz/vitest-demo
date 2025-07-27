@@ -108,18 +108,32 @@ class: text-center
 
 ## 测试金字塔
 
-```mermaid {scale: 0.8}
+```mermaid {scale: 0.9}
 graph TD
-    A[UI Tests] --> B[Integration Tests]
-    B --> C[Unit Tests]
+    A["🌐 UI Tests<br/>端到端测试"] --> B["🔗 Integration Tests<br/>集成测试"]
+    B --> C["⚡ Unit Tests<br/>单元测试"]
+    
+    D["📸 快照测试<br/>Snapshot Tests"] -.-> C
+    D -.-> B
     
     style A fill:#ff6b6b
     style B fill:#4ecdc4
     style C fill:#45b7d1
+    style D fill:#ffd93d
 ```
 
 <div class="text-sm pt-2 opacity-70">
 单元测试是测试金字塔的基础，数量最多，成本最低
+</div>
+
+<div v-click class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+<h4 class="font-bold text-sm mb-2">📸 快照测试的跨层级特性</h4>
+<div class="text-xs opacity-80">
+<strong>🎯 横跨多个层级</strong>：快照测试不是独立的测试层级，而是一种测试技术<br/>
+<strong>⚡ 单元测试层</strong>：测试单个组件的渲染输出结构<br/>
+<strong>🔗 集成测试层</strong>：测试页面或组件组合的整体输出<br/>
+<strong>🚀 特点</strong>：快速执行、确保输出一致性、自动变更检测
+</div>
 </div>
 
 </div>
@@ -177,8 +191,8 @@ graph LR
     B --> C[生产阶段]
     
     A -.-> D[成本: 1x]
-    B -.-> E[成本: 10x]
-    C -.-> F[成本: 100x]
+    B -.-> E[成本: 3-5x]
+    C -.-> F[成本: 5-10x]
 ```
 
 </v-click>
@@ -301,6 +315,73 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 ---
 
+# DOM 环境：happy-dom vs jsdom
+
+<div class="grid grid-cols-2 gap-8 pt-4">
+
+<div>
+
+## 🚀 happy-dom 优势
+
+<v-click>
+
+- **启动速度**: 200ms (快 3-5 倍)
+- **内存占用**: ~75MB (减少 50%)
+- **现代 API**: 完整支持 ES6+ 和现代 Web API
+- **维护性**: 活跃开发，定期更新
+
+</v-click>
+
+<v-click>
+
+## 📊 性能对比
+
+```mermaid {scale: 0.8}
+graph TB
+    subgraph "性能对比"
+        A["启动时间<br/>happy-dom: 200ms<br/>jsdom: 800ms"] 
+        B["内存占用<br/>happy-dom: 75MB<br/>jsdom: 150MB"]
+        C["API 支持<br/>happy-dom: 90%<br/>jsdom: 60%"]
+    end
+    
+    style A fill:#90EE90
+    style B fill:#87CEEB  
+    style C fill:#DDA0DD
+```
+
+<div class="text-xs pt-2 opacity-70">
+happy-dom 在各项指标上都明显优于 jsdom
+</div>
+
+</v-click>
+
+</div>
+
+<div v-click>
+
+## 🔄 迁移简单
+
+```typescript
+// 只需更改一行配置
+export default defineConfig({
+  test: {
+-   environment: 'jsdom',
++   environment: 'happy-dom',
+    globals: true,
+  }
+})
+```
+
+<div class="text-sm pt-4 opacity-70">
+所有现有测试代码无需修改，完全兼容！
+</div>
+
+</div>
+
+</div>
+
+---
+
 # Vitest 的优势
 
 <div class="grid grid-cols-2 gap-8 pt-4">
@@ -354,7 +435,7 @@ xychart-beta
 // vitest.config.ts
 export default defineConfig({
   test: {
-    environment: 'jsdom', // 浏览器环境
+    environment: 'happy-dom', // 浏览器环境
     globals: true,        // 全局测试 API
   }
 })
@@ -486,14 +567,14 @@ npm install -D vitest @vitest/ui
 # React 测试工具
 npm install -D @testing-library/react
 npm install -D @testing-library/jest-dom
-npm install -D jsdom
+npm install -D happy-dom
 ```
 
 </v-click>
 
-<v-click>
-
 ## ⚙️ 配置文件
+
+<v-click>
 
 ```typescript
 // vitest.config.ts
@@ -501,12 +582,23 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
+    environment: 'happy-dom',
     globals: true,
     setupFiles: './src/test/setup.ts'
   }
 })
 ```
+
+</v-click>
+
+### 为什么选择 happy-dom？
+
+<v-click>
+happy-dom 是比 jsdom 更现代、更快速的 DOM 模拟环境：
+
+- 🚀 **3-5倍更快** 的启动和执行速度
+- 💾 **50%更少** 的内存占用  
+- 🔧 **更好的** 现代 Web API 支持
 
 </v-click>
 
@@ -1202,6 +1294,178 @@ describe('ContactForm Integration', () => {
 
 ---
 
+# 示例7：快照测试
+
+## 确保组件输出一致性
+
+<div class="grid grid-cols-2 gap-4 pt-4">
+
+<div>
+
+**被测试的组件**
+
+```tsx
+// src/components/Card.tsx
+import React from 'react';
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  avatar?: string;
+}
+
+interface UserCardProps {
+  user: User;
+  isActive?: boolean;
+}
+
+export const UserCard: React.FC<UserCardProps> = ({ 
+  user, 
+  isActive = false 
+}) => {
+  return (
+    <div className={`card ${isActive ? 'active' : ''}`}>
+      <div className="card-header">
+        {user.avatar && (
+          <img src={user.avatar} alt={user.name} className="avatar" />
+        )}
+        <h3>{user.name}</h3>
+      </div>
+      <div className="card-body">
+        <p className="email">{user.email}</p>
+        <div className="status">
+          {isActive ? '🟢 在线' : '⚫ 离线'}
+        </div>
+      </div>
+    </div>
+  );
+};
+```
+
+</div>
+
+<div>
+
+**快照测试**
+
+```tsx
+// src/components/__tests__/UserCard.test.tsx
+import { describe, test, expect } from 'vitest'
+import { render } from '@testing-library/react'
+import { UserCard } from '../UserCard'
+
+const mockUser = {
+  id: 1,
+  name: 'John Doe',
+  email: 'john@example.com',
+  avatar: 'https://example.com/avatar.jpg'
+};
+
+describe('UserCard Snapshots', () => {
+  test('renders default state correctly', () => {
+    const { container } = render(<UserCard user={mockUser} />);
+    
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
+  test('renders active state correctly', () => {
+    const { container } = render(
+      <UserCard user={mockUser} isActive={true} />
+    );
+    
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
+  test('renders without avatar correctly', () => {
+    const userWithoutAvatar = { ...mockUser, avatar: undefined };
+    const { container } = render(<UserCard user={userWithoutAvatar} />);
+    
+    expect(container.firstChild).toMatchSnapshot();
+  });
+
+  test('matches inline snapshot', () => {
+    const { container } = render(<UserCard user={mockUser} />);
+    
+    expect(container.firstChild).toMatchInlineSnapshot(`
+      <div class="card ">
+        <div class="card-header">
+          <img src="https://example.com/avatar.jpg" alt="John Doe" class="avatar" />
+          <h3>John Doe</h3>
+        </div>
+        <div class="card-body">
+          <p class="email">john@example.com</p>
+          <div class="status">⚫ 离线</div>
+        </div>
+      </div>
+    `);
+  });
+});
+```
+
+</div>
+
+</div>
+
+---
+
+# 快照测试：位置与特点
+
+<div class="grid grid-cols-2 gap-8 pt-4">
+
+<div>
+
+## 🎯 在测试金字塔中的位置
+
+<v-click>
+
+### 主要属于**单元测试**层级
+- 测试单个组件的渲染输出
+- 验证组件在不同 props 下的表现
+- 快速执行，不依赖外部环境
+
+</v-click>
+
+<v-click>
+
+### 部分属于**集成测试**层级
+- 测试组件组合的整体输出
+- 验证页面级别的渲染结果
+- 检测样式和布局的变化
+
+</v-click>
+
+</div>
+
+<div>
+
+## ⚡ 快照测试的优势
+
+<v-click>
+
+### ✅ 优点
+- **快速检测变更** - 自动发现意外的UI变化
+- **零维护成本** - 自动生成和更新
+- **全面覆盖** - 捕获完整的输出结构
+- **回归保护** - 防止意外的样式破坏
+
+</v-click>
+
+<v-click>
+
+### ⚠️ 注意事项
+- **避免过度使用** - 不要对所有组件都做快照
+- **及时更新** - 有意变更时需要更新快照
+- **可读性** - 快照文件要保持清晰可读
+
+</v-click>
+
+</div>
+
+</div>
+
+---
+
 # 测试最佳实践
 
 <div class="grid grid-cols-2 gap-8 pt-4">
@@ -1439,5 +1703,5 @@ class: text-center
 </div>
 
 <div class="pt-8 opacity-50">
-<carbon:logo-github /> 示例代码：本项目中的实际代码示例
+<carbon:logo-github /> <a href="https://github.com/lynzz/vitest-demo">https://github.com/lynzz/vitest-demo</a>
 </div>

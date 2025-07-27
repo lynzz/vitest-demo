@@ -1,0 +1,95 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UserCard Snapshots > renders active state correctly 1`] = `
+<div
+  class="card active"
+>
+  <div
+    class="card-header"
+  >
+    <img
+      alt="John Doe"
+      class="avatar"
+      src="https://example.com/avatar.jpg"
+    />
+    <h3>
+      John Doe
+    </h3>
+  </div>
+  <div
+    class="card-body"
+  >
+    <p
+      class="email"
+    >
+      john@example.com
+    </p>
+    <div
+      class="status"
+    >
+      🟢 在线
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UserCard Snapshots > renders default state correctly 1`] = `
+<div
+  class="card "
+>
+  <div
+    class="card-header"
+  >
+    <img
+      alt="John Doe"
+      class="avatar"
+      src="https://example.com/avatar.jpg"
+    />
+    <h3>
+      John Doe
+    </h3>
+  </div>
+  <div
+    class="card-body"
+  >
+    <p
+      class="email"
+    >
+      john@example.com
+    </p>
+    <div
+      class="status"
+    >
+      ⚫ 离线
+    </div>
+  </div>
+</div>
+`;
+
+exports[`UserCard Snapshots > renders without avatar correctly 1`] = `
+<div
+  class="card "
+>
+  <div
+    class="card-header"
+  >
+    <h3>
+      John Doe
+    </h3>
+  </div>
+  <div
+    class="card-body"
+  >
+    <p
+      class="email"
+    >
+      john@example.com
+    </p>
+    <div
+      class="status"
+    >
+      ⚫ 离线
+    </div>
+  </div>
+</div>
+`;
