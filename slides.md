@@ -12,6 +12,7 @@ drawings:
   persist: false
 transition: slide-left
 mdc: true
+lineNumbers: false
 ---
 
 # React + Vitest 单元测试实践
@@ -113,27 +114,13 @@ graph TD
     A["🌐 UI Tests<br/>端到端测试"] --> B["🔗 Integration Tests<br/>集成测试"]
     B --> C["⚡ Unit Tests<br/>单元测试"]
     
-    D["📸 快照测试<br/>Snapshot Tests"] -.-> C
-    D -.-> B
-    
     style A fill:#ff6b6b
     style B fill:#4ecdc4
     style C fill:#45b7d1
-    style D fill:#ffd93d
 ```
 
 <div class="text-sm pt-2 opacity-70">
 单元测试是测试金字塔的基础，数量最多，成本最低
-</div>
-
-<div v-click class="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-<h4 class="font-bold text-sm mb-2">📸 快照测试的跨层级特性</h4>
-<div class="text-xs opacity-80">
-<strong>🎯 横跨多个层级</strong>：快照测试不是独立的测试层级，而是一种测试技术<br/>
-<strong>⚡ 单元测试层</strong>：测试单个组件的渲染输出结构<br/>
-<strong>🔗 集成测试层</strong>：测试页面或组件组合的整体输出<br/>
-<strong>🚀 特点</strong>：快速执行、确保输出一致性、自动变更检测
-</div>
 </div>
 
 </div>
@@ -241,14 +228,12 @@ graph LR
 
 </div>
 
-<div v-click class="mt-8">
+<div v-click class="mt-6">
 
 ```javascript
-// 示例：测试一个加法函数
 test('should add two numbers correctly', () => {
   // Arrange - 准备测试数据
-  const a = 2;
-  const b = 3;
+  const a = 2, b = 3;
   
   // Act - 执行被测试的功能
   const result = add(a, b);
@@ -317,7 +302,7 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 # DOM 环境：happy-dom vs jsdom
 
-<div class="grid grid-cols-2 gap-8 pt-4">
+<div class="grid grid-cols-2 gap-8 pt-8">
 
 <div>
 
@@ -325,41 +310,20 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 <v-click>
 
-- **启动速度**: 200ms (快 3-5 倍)
-- **内存占用**: ~75MB (减少 50%)
-- **现代 API**: 完整支持 ES6+ 和现代 Web API
+- **启动速度**: 45ms vs 333ms (快 7+ 倍)
+- **HTML 解析**: 26ms vs 256ms (快 10+ 倍)
+- **现代 API**: 更好的 ES6+ 和现代 Web API 支持
 - **维护性**: 活跃开发，定期更新
 
 </v-click>
 
-<v-click>
-
-## 📊 性能对比
-
-```mermaid {scale: 0.8}
-graph TB
-    subgraph "性能对比"
-        A["启动时间<br/>happy-dom: 200ms<br/>jsdom: 800ms"] 
-        B["内存占用<br/>happy-dom: 75MB<br/>jsdom: 150MB"]
-        C["API 支持<br/>happy-dom: 90%<br/>jsdom: 60%"]
-    end
-    
-    style A fill:#90EE90
-    style B fill:#87CEEB  
-    style C fill:#DDA0DD
-```
-
-<div class="text-xs pt-2 opacity-70">
-happy-dom 在各项指标上都明显优于 jsdom
 </div>
 
-</v-click>
-
-</div>
-
-<div v-click>
+<div>
 
 ## 🔄 迁移简单
+
+<v-click>
 
 ```typescript
 // 只需更改一行配置
@@ -372,9 +336,11 @@ export default defineConfig({
 })
 ```
 
-<div class="text-sm pt-4 opacity-70">
+<div class="text-sm pt-1 opacity-70">
 所有现有测试代码无需修改，完全兼容！
 </div>
+
+</v-click>
 
 </div>
 
@@ -565,9 +531,7 @@ class: text-center
 npm install -D vitest @vitest/ui
 
 # React 测试工具
-npm install -D @testing-library/react
-npm install -D @testing-library/jest-dom
-npm install -D happy-dom
+npm install -D @testing-library/react @testing-library/jest-dom happy-dom
 ```
 
 </v-click>
@@ -588,17 +552,6 @@ export default defineConfig({
   }
 })
 ```
-
-</v-click>
-
-### 为什么选择 happy-dom？
-
-<v-click>
-happy-dom 是比 jsdom 更现代、更快速的 DOM 模拟环境：
-
-- 🚀 **3-5倍更快** 的启动和执行速度
-- 💾 **50%更少** 的内存占用  
-- 🔧 **更好的** 现代 Web API 支持
 
 </v-click>
 
@@ -1131,84 +1084,52 @@ describe('useCounter Hook', () => {
 
 ---
 
-# 示例6：集成测试
+# 示例6：真正的集成测试
 
-## 表单提交完整流程
+## ContactForm + UserList 组件协作
 
 <div class="grid grid-cols-2 gap-4 pt-4">
 
 <div>
 
-**表单组件**
+**集成组件**
 
 ```tsx
-// src/components/ContactForm.tsx
+// src/components/ContactUserIntegration.tsx
 import React, { useState } from 'react';
+import { ContactForm } from './ContactForm';
+import { UserList } from './UserList';
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
+export const ContactUserIntegration: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([
+    { id: 1, name: 'Admin', email: 'admin@example.com' }
+  ]);
 
-interface ContactFormProps {
-  onSubmit: (data: FormData) => Promise<void>;
-}
-
-export const ContactForm: React.FC<ContactFormProps> = ({ onSubmit }) => {
-  const [formData, setFormData] = useState<FormData>({
-    name: '', email: '', message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    try {
-      await onSubmit(formData);
-      setSubmitted(true);
-    } catch (error) {
-      console.error('Submit failed:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleSubmit = async (formData: FormData) => {
+    const newUser: User = {
+      id: users.length + 1,
+      name: formData.name,
+      email: formData.email
+    };
+    setUsers(prev => [...prev, newUser]);
   };
 
-  if (submitted) {
-    return <div>Thank you for your message!</div>;
-  }
+  const fetchUsers = async (): Promise<User[]> => {
+    return users;
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Name"
-        value={formData.name}
-        onChange={(e) => setFormData(prev => 
-          ({ ...prev, name: e.target.value }))}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={(e) => setFormData(prev => 
-          ({ ...prev, email: e.target.value }))}
-        required
-      />
-      <textarea
-        placeholder="Message"
-        value={formData.message}
-        onChange={(e) => setFormData(prev => 
-          ({ ...prev, message: e.target.value }))}
-        required
-      />
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Sending...' : 'Send'}
-      </button>
-    </form>
+    <div className="contact-user-integration">
+      <div className="form-section">
+        <h2>添加新用户</h2>
+        <ContactForm onSubmit={handleSubmit} />
+      </div>
+      
+      <div className="list-section">
+        <h2>用户列表</h2>
+        <UserList fetchUsers={fetchUsers} />
+      </div>
+    </div>
   );
 };
 ```
@@ -1217,21 +1138,26 @@ export const ContactForm: React.FC<ContactFormProps> = ({ onSubmit }) => {
 
 <div>
 
-**集成测试**
+**真正的集成测试**
 
 ```tsx
-// src/components/__tests__/ContactForm.test.tsx
-import { describe, test, expect, vi } from 'vitest'
+// src/components/__tests__/ContactUserIntegration.test.tsx
+import { describe, test, expect } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ContactForm } from '../ContactForm'
+import { ContactUserIntegration } from '../ContactUserIntegration'
 
-describe('ContactForm Integration', () => {
-  test('submits form with correct data', async () => {
+describe('ContactUserIntegration - 真正的集成测试', () => {
+  test('用户提交表单后，新用户应该出现在列表中', async () => {
     const user = userEvent.setup();
-    const mockSubmit = vi.fn().mockResolvedValue(undefined);
     
-    render(<ContactForm onSubmit={mockSubmit} />);
+    render(<ContactUserIntegration />);
+    
+    // 等待初始用户列表加载
+    await waitFor(() => {
+      expect(screen.getByText('Admin - admin@example.com'))
+        .toBeInTheDocument();
+    });
     
     // 填写表单
     await user.type(screen.getByPlaceholderText('Name'), 'John Doe');
@@ -1241,49 +1167,21 @@ describe('ContactForm Integration', () => {
     // 提交表单
     await user.click(screen.getByText('Send'));
     
-    // 验证调用
-    expect(mockSubmit).toHaveBeenCalledWith({
-      name: 'John Doe',
-      email: 'john@test.com',
-      message: 'Hello World'
-    });
-  });
-
-  test('shows success message after submission', async () => {
-    const user = userEvent.setup();
-    const mockSubmit = vi.fn().mockResolvedValue(undefined);
-    
-    render(<ContactForm onSubmit={mockSubmit} />);
-    
-    // 填写并提交表单
-    await user.type(screen.getByPlaceholderText('Name'), 'John');
-    await user.type(screen.getByPlaceholderText('Email'), 'john@test.com');
-    await user.type(screen.getByPlaceholderText('Message'), 'Test');
-    await user.click(screen.getByText('Send'));
-    
-    // 等待成功消息
+    // 等待表单提交完成
     await waitFor(() => {
       expect(screen.getByText('Thank you for your message!'))
         .toBeInTheDocument();
     });
-  });
-
-  test('shows loading state during submission', async () => {
-    const user = userEvent.setup();
-    const mockSubmit = vi.fn(() => new Promise(resolve => 
-      setTimeout(resolve, 100)
-    ));
     
-    render(<ContactForm onSubmit={mockSubmit} />);
+    // 验证新用户出现在列表中
+    await waitFor(() => {
+      expect(screen.getByText('John Doe - john@test.com'))
+        .toBeInTheDocument();
+    });
     
-    await user.type(screen.getByPlaceholderText('Name'), 'John');
-    await user.type(screen.getByPlaceholderText('Email'), 'john@test.com');
-    await user.type(screen.getByPlaceholderText('Message'), 'Test');
-    
-    await user.click(screen.getByText('Send'));
-    
-    expect(screen.getByText('Sending...')).toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeDisabled();
+    // 验证用户列表包含两个用户
+    const userItems = screen.getAllByRole('listitem');
+    expect(userItems).toHaveLength(2);
   });
 });
 ```
@@ -1409,62 +1307,6 @@ describe('UserCard Snapshots', () => {
 
 ---
 
-# 快照测试：位置与特点
-
-<div class="grid grid-cols-2 gap-8 pt-4">
-
-<div>
-
-## 🎯 在测试金字塔中的位置
-
-<v-click>
-
-### 主要属于**单元测试**层级
-- 测试单个组件的渲染输出
-- 验证组件在不同 props 下的表现
-- 快速执行，不依赖外部环境
-
-</v-click>
-
-<v-click>
-
-### 部分属于**集成测试**层级
-- 测试组件组合的整体输出
-- 验证页面级别的渲染结果
-- 检测样式和布局的变化
-
-</v-click>
-
-</div>
-
-<div>
-
-## ⚡ 快照测试的优势
-
-<v-click>
-
-### ✅ 优点
-- **快速检测变更** - 自动发现意外的UI变化
-- **零维护成本** - 自动生成和更新
-- **全面覆盖** - 捕获完整的输出结构
-- **回归保护** - 防止意外的样式破坏
-
-</v-click>
-
-<v-click>
-
-### ⚠️ 注意事项
-- **避免过度使用** - 不要对所有组件都做快照
-- **及时更新** - 有意变更时需要更新快照
-- **可读性** - 快照文件要保持清晰可读
-
-</v-click>
-
-</div>
-
-</div>
-
----
 
 # 测试最佳实践
 
@@ -1561,24 +1403,28 @@ src/
 
 <div>
 
-## ❓ 常见问题
-
 <v-click>
 
-### 1. 异步测试超时
+### 1. 异步测试常见问题
 
 ```javascript
-// ❌ 问题
-test('async test', async () => {
-  const result = await slowFunction();
+// ❌ 忘记 await
+test('async test', () => {
+  const result = fetchData(); // 没有 await
+  expect(result).toBe('data'); // 测试 Promise 对象
+});
+
+// ❌ 超时问题（默认5秒）
+test('slow async test', async () => {
+  const result = await verySlowFunction(); // 需要8秒
   expect(result).toBe('success');
 });
 
-// ✅ 解决
+// ✅ 正确处理
 test('async test', async () => {
-  const result = await slowFunction();
-  expect(result).toBe('success');
-}, 10000); // 增加超时时间
+  const result = await fetchData();
+  expect(result).toBe('data');
+}, 10000); // 设置超时时间
 ```
 
 </v-click>
@@ -1602,11 +1448,10 @@ afterEach(() => {
 
 <div>
 
-## 💡 解决方案
 
 <v-click>
 
-### 3. 环境变量
+### 3. 环境变量配置
 
 ```javascript
 // vitest.config.ts
@@ -1623,7 +1468,7 @@ export default defineConfig({
 
 <v-click>
 
-### 4. 样式和静态资源
+### 4. 样式和静态资源处理
 
 ```javascript
 // vitest.config.ts

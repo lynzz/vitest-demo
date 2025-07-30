@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@slidev/cli": "^52.0.0",
+    "@slidev/theme-apple-basic": "^0.25.1",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
     "react": "^18.2.0",

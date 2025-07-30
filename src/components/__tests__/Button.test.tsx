@@ -16,6 +16,7 @@ describe('Button Component', () => {
     fireEvent.click(screen.getByText('Click me'));
     
     expect(handleClick).toHaveBeenCalledTimes(1);
+
   });
 
   test('applies correct CSS class for variant', () => {

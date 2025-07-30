@@ -4,7 +4,9 @@ import { Button } from './components/Button';
 import { Counter } from './components/Counter';
 import { UserList } from './components/UserList';
 import { ContactForm } from './components/ContactForm';
+import { ContactUserIntegration } from './components/ContactUserIntegration';
 import { useCounter } from './hooks/useCounter';
+import { fetchData, verySlowFunction, fetchUserData, apiCall } from './utils/asyncUtils';
 
 // 模拟用户数据获取
 const fetchUsers = async () => {
@@ -20,6 +22,66 @@ const fetchUsers = async () => {
 const handleFormSubmit = async (data: any) => {
   console.log('Form submitted:', data);
   await new Promise(resolve => setTimeout(resolve, 1000));
+};
+
+// 异步工具函数演示
+const AsyncUtilsDemo: React.FC = () => {
+  const [results, setResults] = React.useState<any>({});
+  const [loading, setLoading] = React.useState<string | null>(null);
+
+  const runAsyncTest = async (testName: string, testFn: () => Promise<any>) => {
+    setLoading(testName);
+    try {
+      const result = await testFn();
+      setResults((prev: any) => ({ ...prev, [testName]: result }));
+    } catch (error) {
+      setResults((prev: any) => ({ ...prev, [testName]: `Error: ${error}` }));
+    } finally {
+      setLoading(null);
+    }
+  };
+
+  return (
+    <div style={{ margin: '20px 0' }}>
+      <h2>异步工具函数演示</h2>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+        <Button 
+          onClick={() => runAsyncTest('fetchData', fetchData)}
+          disabled={loading === 'fetchData'}
+        >
+          {loading === 'fetchData' ? 'Loading...' : '测试 fetchData'}
+        </Button>
+        
+        <Button 
+          onClick={() => runAsyncTest('fetchUserData', () => fetchUserData(1))}
+          disabled={loading === 'fetchUserData'}
+        >
+          {loading === 'fetchUserData' ? 'Loading...' : '测试 fetchUserData'}
+        </Button>
+        
+        <Button 
+          onClick={() => runAsyncTest('apiCall', () => apiCall('/users'))}
+          disabled={loading === 'apiCall'}
+        >
+          {loading === 'apiCall' ? 'Loading...' : '测试 apiCall'}
+        </Button>
+        
+        <Button 
+          onClick={() => runAsyncTest('verySlowFunction', verySlowFunction)}
+          disabled={loading === 'verySlowFunction'}
+        >
+          {loading === 'verySlowFunction' ? 'Loading...' : '测试慢函数'}
+        </Button>
+      </div>
+      
+      <div style={{ marginTop: '10px' }}>
+        <h4>结果：</h4>
+        <pre style={{ backgroundColor: '#f5f5f5', padding: '10px', borderRadius: '4px', fontSize: '12px' }}>
+          {JSON.stringify(results, null, 2)}
+        </pre>
+      </div>
+    </div>
+  );
 };
 
 // 使用 useCounter Hook 的组件
@@ -68,6 +130,13 @@ const App: React.FC = () => {
         <h2>ContactForm 组件</h2>
         <ContactForm onSubmit={handleFormSubmit} />
       </div>
+
+      <div style={{ margin: '20px 0' }}>
+        <h2>集成测试演示 - ContactForm + UserList</h2>
+        <ContactUserIntegration />
+      </div>
+
+      <AsyncUtilsDemo />
 
       <div style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
         <h3>运行测试</h3>
