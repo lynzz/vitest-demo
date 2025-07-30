@@ -603,9 +603,9 @@ npm run test:ui # 可视化界面
 
 ---
 
-# 示例1：测试纯函数
+# 示例1：基本测试使用
 
-## 最简单的开始 - 工具函数测试
+## 测试简单的数学函数
 
 <div class="grid grid-cols-2 gap-4 pt-4">
 
@@ -615,20 +615,20 @@ npm run test:ui # 可视化界面
 
 ```typescript
 // src/utils/math.ts
-export function add(a: number, b: number): number {
+export const add = (a: number, b: number): number => {
   return a + b;
-}
+};
 
-export function multiply(a: number, b: number): number {
+export const multiply = (a: number, b: number): number => {
   return a * b;
-}
+};
 
-export function divide(a: number, b: number): number {
+export const divide = (a: number, b: number): number => {
   if (b === 0) {
     throw new Error('Division by zero');
   }
   return a / b;
-}
+};
 ```
 
 </div>
@@ -642,31 +642,27 @@ export function divide(a: number, b: number): number {
 import { describe, test, expect } from 'vitest'
 import { add, multiply, divide } from '../math'
 
-describe('Math Utils', () => {
-  test('should add two numbers', () => {
-    // Arrange
-    const a = 2, b = 3;
-    
-    // Act
-    const result = add(a, b);
-    
-    // Assert
-    expect(result).toBe(5);
+describe('Math Functions', () => {
+  test('should add two numbers correctly', () => {
+    expect(add(2, 3)).toBe(5);
+    expect(add(-1, 1)).toBe(0);
+    expect(add(0, 0)).toBe(0);
   });
 
-  test('should multiply two numbers', () => {
-    expect(multiply(4, 5)).toBe(20);
+  test('should multiply two numbers correctly', () => {
+    expect(multiply(2, 3)).toBe(6);
+    expect(multiply(-2, 3)).toBe(-6);
+    expect(multiply(0, 5)).toBe(0);
+  });
+
+  test('should divide two numbers correctly', () => {
+    expect(divide(6, 2)).toBe(3);
+    expect(divide(5, 2)).toBe(2.5);
+    expect(divide(-6, 2)).toBe(-3);
   });
 
   test('should throw error when dividing by zero', () => {
-    expect(() => divide(10, 0))
-      .toThrow('Division by zero');
-  });
-
-  test('should handle negative numbers', () => {
-    expect(add(-1, 1)).toBe(0);
-    expect(multiply(-2, 3)).toBe(-6);
-    expect(divide(-10, 2)).toBe(-5);
+    expect(() => divide(5, 0)).toThrow('Division by zero');
   });
 });
 ```
@@ -677,295 +673,7 @@ describe('Math Utils', () => {
 
 ---
 
-# 示例2：测试React组件
-
-## 简单组件测试
-
-<div class="grid grid-cols-2 gap-4 pt-4">
-
-<div>
-
-**被测试的组件**
-
-```tsx
-// src/components/Button.tsx
-import React from 'react';
-
-interface ButtonProps {
-  children: React.ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  variant?: 'primary' | 'secondary';
-}
-
-export const Button: React.FC<ButtonProps> = ({
-  children,
-  onClick,
-  disabled = false,
-  variant = 'primary'
-}) => {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`btn btn-${variant}`}
-    >
-      {children}
-    </button>
-  );
-};
-```
-
-</div>
-
-<div>
-
-**测试代码**
-
-```tsx
-// src/components/__tests__/Button.test.tsx
-import { describe, test, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { Button } from '../Button'
-
-describe('Button Component', () => {
-  test('renders button with text', () => {
-    render(<Button>Click me</Button>);
-    
-    expect(screen.getByText('Click me')).toBeInTheDocument();
-  });
-
-  test('calls onClick when clicked', () => {
-    const handleClick = vi.fn();
-    render(<Button onClick={handleClick}>Click me</Button>);
-    
-    fireEvent.click(screen.getByText('Click me'));
-    
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
-
-  test('applies correct CSS class for variant', () => {
-    render(<Button variant="secondary">Button</Button>);
-    
-    expect(screen.getByRole('button'))
-      .toHaveClass('btn-secondary');
-  });
-
-  test('disables button when disabled prop is true', () => {
-    render(<Button disabled>Disabled Button</Button>);
-    
-    expect(screen.getByRole('button')).toBeDisabled();
-  });
-});
-```
-
-</div>
-
-</div>
-
----
-
-# 示例3：测试带状态的组件
-
-## Counter 组件测试
-
-<div class="grid grid-cols-2 gap-4 pt-4">
-
-<div>
-
-**被测试的组件**
-
-```tsx
-// src/components/Counter.tsx
-import React, { useState } from 'react';
-
-interface CounterProps {
-  initialValue?: number;
-  step?: number;
-}
-
-export const Counter: React.FC<CounterProps> = ({
-  initialValue = 0,
-  step = 1
-}) => {
-  const [count, setCount] = useState(initialValue);
-
-  const increment = () => setCount(prev => prev + step);
-  const decrement = () => setCount(prev => prev - step);
-  const reset = () => setCount(initialValue);
-
-  return (
-    <div>
-      <span data-testid="count">{count}</span>
-      <button onClick={increment}>+</button>
-      <button onClick={decrement}>-</button>
-      <button onClick={reset}>Reset</button>
-    </div>
-  );
-};
-```
-
-</div>
-
-<div>
-
-**测试代码**
-
-```tsx
-// src/components/__tests__/Counter.test.tsx
-import { describe, test, expect } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
-import { Counter } from '../Counter'
-
-describe('Counter Component', () => {
-  test('renders with initial value', () => {
-    render(<Counter initialValue={5} />);
-    
-    expect(screen.getByTestId('count')).toHaveTextContent('5');
-  });
-
-  test('increments count when + button clicked', () => {
-    render(<Counter />);
-    
-    fireEvent.click(screen.getByText('+'));
-    
-    expect(screen.getByTestId('count')).toHaveTextContent('1');
-  });
-
-  test('decrements with custom step', () => {
-    render(<Counter initialValue={10} step={2} />);
-    
-    fireEvent.click(screen.getByText('-'));
-    
-    expect(screen.getByTestId('count')).toHaveTextContent('8');
-  });
-
-  test('resets to initial value', () => {
-    render(<Counter initialValue={5} />);
-    
-    // 先改变值
-    fireEvent.click(screen.getByText('+'));
-    expect(screen.getByTestId('count')).toHaveTextContent('6');
-    
-    // 然后重置
-    fireEvent.click(screen.getByText('Reset'));
-    expect(screen.getByTestId('count')).toHaveTextContent('5');
-  });
-});
-```
-
-</div>
-
-</div>
-
----
-
-# 示例4：测试异步操作
-
-## 模拟 API 调用
-
-<div class="grid grid-cols-2 gap-4 pt-4">
-
-<div>
-
-**用户列表组件**
-
-```tsx
-// src/components/UserList.tsx
-import React, { useState, useEffect } from 'react';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
-interface UserListProps {
-  fetchUsers: () => Promise<User[]>;
-}
-
-export const UserList: React.FC<UserListProps> = ({ fetchUsers }) => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetchUsers()
-      .then(setUsers)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, [fetchUsers]);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
-  return (
-    <ul>
-      {users.map(user => (
-        <li key={user.id}>{user.name} - {user.email}</li>
-      ))}
-    </ul>
-  );
-};
-```
-
-</div>
-
-<div>
-
-**异步测试**
-
-```tsx
-// src/components/__tests__/UserList.test.tsx
-import { describe, test, expect, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
-import { UserList } from '../UserList'
-
-const mockUsers = [
-  { id: 1, name: 'John', email: 'john@test.com' },
-  { id: 2, name: 'Jane', email: 'jane@test.com' }
-];
-
-describe('UserList Component', () => {
-  test('shows loading initially', () => {
-    const fetchUsers = vi.fn(() => new Promise(() => {}));
-    render(<UserList fetchUsers={fetchUsers} />);
-    
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
-  });
-
-  test('displays users after successful fetch', async () => {
-    const fetchUsers = vi.fn().mockResolvedValue(mockUsers);
-    render(<UserList fetchUsers={fetchUsers} />);
-    
-    await waitFor(() => {
-      expect(screen.getByText('John - john@test.com'))
-        .toBeInTheDocument();
-    });
-    
-    expect(fetchUsers).toHaveBeenCalledTimes(1);
-  });
-
-  test('shows error when fetch fails', async () => {
-    const fetchUsers = vi.fn()
-      .mockRejectedValue(new Error('Failed to fetch'));
-    render(<UserList fetchUsers={fetchUsers} />);
-    
-    await waitFor(() => {
-      expect(screen.getByText('Error: Failed to fetch'))
-        .toBeInTheDocument();
-    });
-  });
-});
-```
-
-</div>
-
-</div>
-
----
-
-# 示例5：测试自定义Hook
+# 示例2：测试自定义Hook
 
 ## 复杂业务逻辑测试
 
@@ -1084,219 +792,179 @@ describe('useCounter Hook', () => {
 
 ---
 
-# 示例6：真正的集成测试
+# 示例3：完整 Todo 应用测试
 
-## ContactForm + UserList 组件协作
+## 测试整个应用的用户流程
 
 <div class="grid grid-cols-2 gap-4 pt-4">
 
 <div>
 
-**集成组件**
+**完整的 Todo 应用**
 
 ```tsx
-// src/components/ContactUserIntegration.tsx
-import React, { useState } from 'react';
-import { ContactForm } from './ContactForm';
-import { UserList } from './UserList';
+// src/components/TodoApp.tsx
+export const TodoApp: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
-export const ContactUserIntegration: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([
-    { id: 1, name: 'Admin', email: 'admin@example.com' }
-  ]);
-
-  const handleSubmit = async (formData: FormData) => {
-    const newUser: User = {
-      id: users.length + 1,
-      name: formData.name,
-      email: formData.email
+  const addTodo = useCallback((text: string) => {
+    const newTodo: Todo = {
+      id: Date.now().toString(),
+      text,
+      completed: false
     };
-    setUsers(prev => [...prev, newUser]);
-  };
+    setTodos(prev => [...prev, newTodo]);
+  }, []);
 
-  const fetchUsers = async (): Promise<User[]> => {
-    return users;
-  };
-
-  return (
-    <div className="contact-user-integration">
-      <div className="form-section">
-        <h2>添加新用户</h2>
-        <ContactForm onSubmit={handleSubmit} />
-      </div>
-      
-      <div className="list-section">
-        <h2>用户列表</h2>
-        <UserList fetchUsers={fetchUsers} />
-      </div>
-    </div>
-  );
-};
-```
-
-</div>
-
-<div>
-
-**真正的集成测试**
-
-```tsx
-// src/components/__tests__/ContactUserIntegration.test.tsx
-import { describe, test, expect } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { ContactUserIntegration } from '../ContactUserIntegration'
-
-describe('ContactUserIntegration - 真正的集成测试', () => {
-  test('用户提交表单后，新用户应该出现在列表中', async () => {
-    const user = userEvent.setup();
-    
-    render(<ContactUserIntegration />);
-    
-    // 等待初始用户列表加载
-    await waitFor(() => {
-      expect(screen.getByText('Admin - admin@example.com'))
-        .toBeInTheDocument();
-    });
-    
-    // 填写表单
-    await user.type(screen.getByPlaceholderText('Name'), 'John Doe');
-    await user.type(screen.getByPlaceholderText('Email'), 'john@test.com');
-    await user.type(screen.getByPlaceholderText('Message'), 'Hello World');
-    
-    // 提交表单
-    await user.click(screen.getByText('Send'));
-    
-    // 等待表单提交完成
-    await waitFor(() => {
-      expect(screen.getByText('Thank you for your message!'))
-        .toBeInTheDocument();
-    });
-    
-    // 验证新用户出现在列表中
-    await waitFor(() => {
-      expect(screen.getByText('John Doe - john@test.com'))
-        .toBeInTheDocument();
-    });
-    
-    // 验证用户列表包含两个用户
-    const userItems = screen.getAllByRole('listitem');
-    expect(userItems).toHaveLength(2);
-  });
-});
-```
-
-</div>
-
-</div>
-
----
-
-# 示例7：快照测试
-
-## 确保组件输出一致性
-
-<div class="grid grid-cols-2 gap-4 pt-4">
-
-<div>
-
-**被测试的组件**
-
-```tsx
-// src/components/Card.tsx
-import React from 'react';
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  avatar?: string;
-}
-
-interface UserCardProps {
-  user: User;
-  isActive?: boolean;
-}
-
-export const UserCard: React.FC<UserCardProps> = ({ 
-  user, 
-  isActive = false 
-}) => {
-  return (
-    <div className={`card ${isActive ? 'active' : ''}`}>
-      <div className="card-header">
-        {user.avatar && (
-          <img src={user.avatar} alt={user.name} className="avatar" />
-        )}
-        <h3>{user.name}</h3>
-      </div>
-      <div className="card-body">
-        <p className="email">{user.email}</p>
-        <div className="status">
-          {isActive ? '🟢 在线' : '⚫ 离线'}
-        </div>
-      </div>
-    </div>
-  );
-};
-```
-
-</div>
-
-<div>
-
-**快照测试**
-
-```tsx
-// src/components/__tests__/UserCard.test.tsx
-import { describe, test, expect } from 'vitest'
-import { render } from '@testing-library/react'
-import { UserCard } from '../UserCard'
-
-const mockUser = {
-  id: 1,
-  name: 'John Doe',
-  email: 'john@example.com',
-  avatar: 'https://example.com/avatar.jpg'
-};
-
-describe('UserCard Snapshots', () => {
-  test('renders default state correctly', () => {
-    const { container } = render(<UserCard user={mockUser} />);
-    
-    expect(container.firstChild).toMatchSnapshot();
-  });
-
-  test('renders active state correctly', () => {
-    const { container } = render(
-      <UserCard user={mockUser} isActive={true} />
+  const toggleTodo = useCallback((id: string) => {
+    setTodos(prev => 
+      prev.map(todo => 
+        todo.id === id 
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      )
     );
+  }, []);
+
+  const deleteTodo = useCallback((id: string) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id));
+  }, []);
+
+  const clearCompleted = useCallback(() => {
+    setTodos(prev => prev.filter(todo => !todo.completed));
+  }, []);
+
+  return (
+    <div className="max-w-md mx-auto p-6 bg-gray-50">
+      <h1 className="text-2xl font-bold text-center mb-6">
+        📝 Todo 应用
+      </h1>
+      
+      <TodoInput onAdd={addTodo} />
+      
+      <TodoList
+        todos={todos}
+        onToggle={toggleTodo}
+        onDelete={deleteTodo}
+        filter={filter}
+      />
+      
+      {todos.length > 0 && (
+        <div className="mt-6 pt-4 border-t">
+          <div className="flex items-center justify-between">
+            <span>{activeCount} 项待完成</span>
+            
+            <div className="flex gap-2">
+              <button onClick={() => setFilter('all')}>全部</button>
+              <button onClick={() => setFilter('active')}>进行中</button>
+              <button onClick={() => setFilter('completed')}>已完成</button>
+            </div>
+            
+            {completedCount > 0 && (
+              <button onClick={clearCompleted}>清除已完成</button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+```
+
+</div>
+
+<div>
+
+**集成测试**
+
+```tsx
+// src/components/__tests__/TodoApp.test.tsx
+import { describe, test, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { TodoApp } from '../TodoApp'
+
+describe('TodoApp Integration Tests', () => {
+  test('adds new todo when form is submitted', async () => {
+    const user = userEvent.setup();
+    render(<TodoApp />);
     
-    expect(container.firstChild).toMatchSnapshot();
+    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    const button = screen.getByText('添加');
+    
+    await user.type(input, '学习 Vitest');
+    await user.click(button);
+    
+    expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    expect(input).toHaveValue('');
   });
 
-  test('renders without avatar correctly', () => {
-    const userWithoutAvatar = { ...mockUser, avatar: undefined };
-    const { container } = render(<UserCard user={userWithoutAvatar} />);
+  test('toggles todo completion status', async () => {
+    const user = userEvent.setup();
+    render(<TodoApp />);
     
-    expect(container.firstChild).toMatchSnapshot();
+    // Add a todo
+    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    await user.type(input, '学习 Vitest');
+    await user.click(screen.getByText('添加'));
+    
+    // Toggle completion
+    const checkbox = screen.getByRole('checkbox');
+    await user.click(checkbox);
+    
+    expect(checkbox).toBeChecked();
   });
 
-  test('matches inline snapshot', () => {
-    const { container } = render(<UserCard user={mockUser} />);
+  test('filters todos correctly', async () => {
+    const user = userEvent.setup();
+    render(<TodoApp />);
     
-    expect(container.firstChild).toMatchInlineSnapshot(`
-      <div class="card ">
-        <div class="card-header">
-          <img src="https://example.com/avatar.jpg" alt="John Doe" class="avatar" />
-          <h3>John Doe</h3>
-        </div>
-        <div class="card-body">
-          <p class="email">john@example.com</p>
-          <div class="status">⚫ 离线</div>
-        </div>
-      </div>
-    `);
+    // Add multiple todos
+    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    await user.type(input, '学习 Vitest');
+    await user.click(screen.getByText('添加'));
+    
+    await user.type(input, '学习 React');
+    await user.click(screen.getByText('添加'));
+    
+    // Complete one todo
+    const checkboxes = screen.getAllByRole('checkbox');
+    await user.click(checkboxes[1]); // Complete "学习 React"
+    
+    // Test active filter
+    await user.click(screen.getByText('进行中'));
+    expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    expect(screen.queryByText('学习 React')).not.toBeInTheDocument();
+    
+    // Test completed filter
+    await user.click(screen.getByText('已完成'));
+    expect(screen.getByText('学习 React')).toBeInTheDocument();
+    expect(screen.queryByText('学习 Vitest')).not.toBeInTheDocument();
+  });
+
+  test('clears completed todos', async () => {
+    const user = userEvent.setup();
+    render(<TodoApp />);
+    
+    // Add and complete todos
+    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    await user.type(input, '学习 Vitest');
+    await user.click(screen.getByText('添加'));
+    
+    await user.type(input, '学习 React');
+    await user.click(screen.getByText('添加'));
+    
+    // Complete both todos
+    const checkboxes = screen.getAllByRole('checkbox');
+    await user.click(checkboxes[0]);
+    await user.click(checkboxes[1]);
+    
+    // Clear completed
+    await user.click(screen.getByText('清除已完成'));
+    
+    expect(screen.queryByText('学习 Vitest')).not.toBeInTheDocument();
+    expect(screen.queryByText('学习 React')).not.toBeInTheDocument();
   });
 });
 ```
