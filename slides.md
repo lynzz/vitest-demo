@@ -43,7 +43,7 @@ transition: fade-out
 <div class="grid grid-cols-1 gap-4 pt-4 -mb-6">
 
 <div v-click class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-  <div class="text-3xl mr-4">🎯</div>
+  <div class="text-3xl mr-4">🧪</div>
   <div>
     <h3 class="font-bold text-lg">第一部分：Unit Test 基础</h3>
     <p class="text-sm opacity-70">什么是单元测试？为什么需要单元测试？</p>
@@ -59,10 +59,18 @@ transition: fade-out
 </div>
 
 <div v-click class="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-  <div class="text-3xl mr-4">🚀</div>
+  <div class="text-3xl mr-4">💻</div>
   <div>
     <h3 class="font-bold text-lg">第三部分：实战演练</h3>
     <p class="text-sm opacity-70">从简单到复杂，循序渐进的实例</p>
+  </div>
+</div>
+
+<div v-click class="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+  <div class="text-3xl mr-4">🤖</div>
+  <div>
+    <h3 class="font-bold text-lg">第四部分：AI 辅助测试</h3>
+    <p class="text-sm opacity-70">利用 AI 工具和 Cursor Rules 提升测试效率</p>
   </div>
 </div>
 
@@ -88,7 +96,7 @@ class: text-center
 
 <v-click>
 
-**单元测试**是对软件中的最小可测试单元进行检查和验证的测试方法。
+**单元测试**是对软件中最小可测试单元进行验证的过程，在 React 中通常指对独立组件或函数的测试。
 
 </v-click>
 
@@ -96,10 +104,10 @@ class: text-center
 
 ## 特点
 
-- 🎯 **独立性** - 每个测试独立运行
+- 🧪 **独立性** - 每个测试独立运行
 - ⚡ **快速** - 执行速度快
 - 🔄 **可重复** - 结果一致可靠
-- 📝 **自动化** - 可自动执行
+- 🤖 **自动化** - 可自动执行
 
 </v-click>
 
@@ -139,9 +147,9 @@ graph TD
 
 <v-click>
 
-- **及早发现bug** - 在开发阶段就发现问题
-- **回归测试** - 确保修改不会破坏现有功能
-- **代码质量** - 促使编写更好的代码
+- 🐛 **及早发现bug** - 在开发阶段就发现问题
+- 🔄 **回归测试** - 确保修改不会破坏现有功能
+- ✨ **代码质量** - 促使编写更好的代码
 
 </v-click>
 
@@ -149,8 +157,8 @@ graph TD
 
 ## 📚 文档作用
 
-- **活文档** - 测试即文档，展示代码如何使用
-- **规格说明** - 明确功能的预期行为
+- 📖 **活文档** - 测试即文档，展示代码如何使用
+- 📋 **规格说明** - 明确功能的预期行为
 
 </v-click>
 
@@ -162,9 +170,9 @@ graph TD
 
 <v-click>
 
-- **重构信心** - 安全地重构代码
-- **快速反馈** - 立即知道代码是否正常工作
-- **调试辅助** - 帮助定位问题
+- 🔨 **重构信心** - 安全地重构代码
+- ⚡ **快速反馈** - 立即知道代码是否正常工作
+- 🔍 **调试辅助** - 帮助定位问题
 
 </v-click>
 
@@ -273,11 +281,11 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 ## 核心特性
 
-- ⚡ **极速** - 基于 Vite，开箱即用的 ESM、TypeScript 和 JSX 支持
-- 🔧 **零配置** - 智能默认配置，即装即用
-- 🎯 **Jest 兼容** - 熟悉的 API，轻松迁移
+- ⚡ **极速HMR** - 基于 Vite，开箱即用的 ESM、TypeScript 和 JSX 支持
+- ⚙️ **零配置** - 智能默认配置，即装即用
+- 🔄 **Jest 兼容** - 熟悉的 API，轻松迁移
 - 🔍 **智能监听** - 只运行相关的测试
-
+- 🖥️ **浏览器测试**：支持真实浏览器环境测试
 </v-click>
 
 </div>
@@ -310,10 +318,10 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 <v-click>
 
-- **启动速度**: 45ms vs 333ms (快 7+ 倍)
-- **HTML 解析**: 26ms vs 256ms (快 10+ 倍)
-- **现代 API**: 更好的 ES6+ 和现代 Web API 支持
-- **维护性**: 活跃开发，定期更新
+- ⚡ **启动速度**: ~200ms vs ~800ms (快 3-4 倍)
+- 🏃 **内存占用**: ~75MB vs ~150MB (减少约 50%)
+- 🌐 **现代 API**: 更好的 ES6+ 和现代 Web API 支持
+- 🔧 **维护性**: 活跃开发，定期更新
 
 </v-click>
 
@@ -358,10 +366,10 @@ export default defineConfig({
 
 <v-click>
 
-- **热重载** - 文件变化时自动重新运行测试
-- **并行执行** - 充分利用多核 CPU
-- **错误提示** - 清晰的错误信息和堆栈跟踪
-- **调试友好** - 与 IDE 完美集成
+- 🔄 **热重载** - 文件变化时自动重新运行测试
+- ⚡ **并行执行** - 充分利用多核 CPU
+- 🚨 **错误提示** - 清晰的错误信息和堆栈跟踪
+- 🛠️ **调试友好** - 与 IDE 完美集成
 
 </v-click>
 
@@ -369,29 +377,15 @@ export default defineConfig({
 
 ## 📦 生态系统
 
-- **Vite 集成** - 共享配置和插件
-- **Vue/React 支持** - 开箱即用的组件测试
-- **丰富插件** - 活跃的插件生态系统
+- ⚡ **Vite 集成** - 共享配置和插件
+- ⚛️ **Vue/React 支持** - 开箱即用的组件测试
+- 🔌 **丰富插件** - 活跃的插件生态系统
 
 </v-click>
 
 </div>
 
 <div>
-
-## ⚡ 性能对比
-
-<v-click>
-
-```mermaid {scale: 0.8}
-xychart-beta
-    title "测试执行时间对比"
-    x-axis [Jest, Vitest]
-    y-axis "时间 (秒)" 0 --> 10
-    bar [8.5, 2.3]
-```
-
-</v-click>
 
 <v-click>
 
@@ -505,6 +499,95 @@ test('async test', async () => {
 </div>
 
 ---
+
+# Vi Mock 的使用
+
+<div class="grid grid-cols-2 gap-8 pt-4">
+
+<div>
+
+## 🎭 Mock 的作用
+
+<v-click>
+
+- 🧪 **隔离测试** - 避免外部依赖影响测试结果
+- 🎪 **控制行为** - 模拟函数返回值和异常情况
+- ✅ **验证调用** - 检查函数是否被正确调用
+- ⚡ **提高速度** - 避免真实的网络请求和数据库操作
+
+</v-click>
+
+<v-click>
+
+## 🔧 基本用法
+
+```javascript
+import { vi } from 'vitest';
+
+// 创建 mock 函数
+const mockFn = vi.fn();
+
+// 设置返回值
+mockFn.mockReturnValue('mocked value');
+
+// 设置实现
+mockFn.mockImplementation(() => 'custom logic');
+```
+
+</v-click>
+
+</div>
+
+<div>
+
+## 📝 常用 Mock 方法
+
+<v-click>
+
+```javascript
+// 函数调用验证
+expect(mockFn).toHaveBeenCalled();
+expect(mockFn).toHaveBeenCalledWith('arg1', 'arg2');
+expect(mockFn).toHaveBeenCalledTimes(3);
+
+// 返回值验证
+expect(mockFn).toHaveReturnedWith('expected value');
+
+// 清除 mock
+vi.clearAllMocks();
+vi.resetAllMocks();
+```
+
+</v-click>
+
+<v-click>
+
+## 🌐 模块 Mock
+
+```javascript
+// Mock 整个模块
+vi.mock('./api', () => ({
+  fetchUser: vi.fn(),
+  saveUser: vi.fn()
+}));
+
+// Mock 部分模块
+vi.mock('./utils', async () => {
+  const actual = await vi.importActual('./utils');
+  return {
+    ...actual,
+    expensiveFunction: vi.fn()
+  };
+});
+```
+
+</v-click>
+
+</div>
+
+</div>
+
+---
 layout: section
 class: text-center
 ---
@@ -516,7 +599,7 @@ class: text-center
 
 # 环境准备
 
-## 安装和配置
+## ⚙️ 安装和配置
 
 <div class="grid grid-cols-2 gap-8 pt-4">
 
@@ -605,7 +688,7 @@ npm run test:ui # 可视化界面
 
 # 示例1：基本测试使用
 
-## 测试简单的数学函数
+## 🧮 测试简单的数学函数
 
 <div class="grid grid-cols-2 gap-4 pt-4">
 
@@ -675,7 +758,7 @@ describe('Math Functions', () => {
 
 # 示例2：测试自定义Hook
 
-## 复杂业务逻辑测试
+## 🪝 复杂业务逻辑测试
 
 <div class="grid grid-cols-2 gap-4 pt-4">
 
@@ -792,9 +875,178 @@ describe('useCounter Hook', () => {
 
 ---
 
-# 示例3：完整 Todo 应用测试
+# 示例3：Mock 异步函数和 API 调用
 
-## 测试整个应用的用户流程
+## 🌐 测试包含外部依赖的组件
+
+<div class="grid grid-cols-2 gap-4 pt-4">
+
+<div>
+
+**用户服务组件**
+
+```tsx
+// src/components/UserProfile.tsx
+import { useState, useEffect } from 'react';
+import { fetchUserData, saveUserData } from '../services/api';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export const UserProfile: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const userData = await fetchUserData();
+        setUser(userData);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '加载失败');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadUser();
+  }, []);
+
+  const handleSave = async (updatedUser: User) => {
+    try {
+      await saveUserData(updatedUser);
+      setUser(updatedUser);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : '保存失败');
+    }
+  };
+
+  if (loading) return <div>加载中...</div>;
+  if (error) return <div>错误: {error}</div>;
+  if (!user) return <div>用户不存在</div>;
+
+  return (
+    <div>
+      <h2>{user.name}</h2>
+      <p>{user.email}</p>
+      <button onClick={() => handleSave({...user, name: '新名字'})}>
+        更新用户
+      </button>
+    </div>
+  );
+};
+```
+
+</div>
+
+<div>
+
+**Mock API 的测试**
+
+```tsx
+// src/components/__tests__/UserProfile.test.tsx
+import { describe, test, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { UserProfile } from '../UserProfile';
+
+// 🌐 Mock 整个 API 模块
+vi.mock('../services/api', () => ({
+  fetchUserData: vi.fn(),
+  saveUserData: vi.fn()
+}));
+
+// 导入 mock 的函数
+import { fetchUserData, saveUserData } from '../services/api';
+
+describe('UserProfile Component', () => {
+  beforeEach(() => {
+    // 🔄 每个测试前重置 mock
+    vi.clearAllMocks();
+  });
+
+  test('displays user data when API call succeeds', async () => {
+    // 🎭 设置 mock 返回值
+    const mockUser = { id: '1', name: '张三', email: 'zhang@example.com' };
+    vi.mocked(fetchUserData).mockResolvedValue(mockUser);
+
+    render(<UserProfile />);
+
+    // 等待异步操作完成
+    await waitFor(() => {
+      expect(screen.getByText('张三')).toBeInTheDocument();
+    });
+
+    expect(screen.getByText('zhang@example.com')).toBeInTheDocument();
+  });
+
+  test('displays error when API call fails', async () => {
+    // 🎭 模拟 API 错误
+    vi.mocked(fetchUserData).mockRejectedValue(new Error('网络错误'));
+
+    render(<UserProfile />);
+
+    await waitFor(() => {
+      expect(screen.getByText('错误: 网络错误')).toBeInTheDocument();
+    });
+  });
+
+  test('calls saveUserData when update button is clicked', async () => {
+    const mockUser = { id: '1', name: '张三', email: 'zhang@example.com' };
+    vi.mocked(fetchUserData).mockResolvedValue(mockUser);
+    vi.mocked(saveUserData).mockResolvedValue(undefined);
+
+    const user = userEvent.setup();
+    render(<UserProfile />);
+
+    await waitFor(() => {
+      expect(screen.getByText('张三')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('更新用户'));
+
+    // ✅ 验证 saveUserData 被调用
+    expect(saveUserData).toHaveBeenCalledWith({
+      id: '1',
+      name: '新名字',
+      email: 'zhang@example.com'
+    });
+  });
+
+  test('handles save error correctly', async () => {
+    const mockUser = { id: '1', name: '张三', email: 'zhang@example.com' };
+    vi.mocked(fetchUserData).mockResolvedValue(mockUser);
+    vi.mocked(saveUserData).mockRejectedValue(new Error('保存失败'));
+
+    const user = userEvent.setup();
+    render(<UserProfile />);
+
+    await waitFor(() => {
+      expect(screen.getByText('张三')).toBeInTheDocument();
+    });
+
+    await user.click(screen.getByText('更新用户'));
+
+    await waitFor(() => {
+      expect(screen.getByText('错误: 保存失败')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+</div>
+
+</div>
+
+---
+
+# 示例4：完整 Todo 应用测试
+
+## 📋 测试整个应用的用户流程
 
 <div class="grid grid-cols-2 gap-4 pt-4">
 
@@ -876,11 +1128,11 @@ export const TodoApp: React.FC = () => {
 
 <div>
 
-**集成测试**
+**集成测试（包含 Vi Mock 使用）**
 
 ```tsx
 // src/components/__tests__/TodoApp.test.tsx
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { TodoApp } from '../TodoApp'
@@ -890,11 +1142,10 @@ describe('TodoApp Integration Tests', () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
-    const input = screen.getByPlaceholderText('添加新的待办事项...');
-    const button = screen.getByText('添加');
+    const input = screen.getByPlaceholderText('What needs to be done?');
     
     await user.type(input, '学习 Vitest');
-    await user.click(button);
+    await user.keyboard('{Enter}');
     
     expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
     expect(input).toHaveValue('');
@@ -905,9 +1156,9 @@ describe('TodoApp Integration Tests', () => {
     render(<TodoApp />);
     
     // Add a todo
-    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    const input = screen.getByPlaceholderText('What needs to be done?');
     await user.type(input, '学习 Vitest');
-    await user.click(screen.getByText('添加'));
+    await user.keyboard('{Enter}');
     
     // Toggle completion
     const checkbox = screen.getByRole('checkbox');
@@ -921,12 +1172,12 @@ describe('TodoApp Integration Tests', () => {
     render(<TodoApp />);
     
     // Add multiple todos
-    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    const input = screen.getByPlaceholderText('What needs to be done?');
     await user.type(input, '学习 Vitest');
-    await user.click(screen.getByText('添加'));
+    await user.keyboard('{Enter}');
     
     await user.type(input, '学习 React');
-    await user.click(screen.getByText('添加'));
+    await user.keyboard('{Enter}');
     
     // Complete one todo
     const checkboxes = screen.getAllByRole('checkbox');
@@ -948,12 +1199,12 @@ describe('TodoApp Integration Tests', () => {
     render(<TodoApp />);
     
     // Add and complete todos
-    const input = screen.getByPlaceholderText('添加新的待办事项...');
+    const input = screen.getByPlaceholderText('What needs to be done?');
     await user.type(input, '学习 Vitest');
-    await user.click(screen.getByText('添加'));
+    await user.keyboard('{Enter}');
     
     await user.type(input, '学习 React');
-    await user.click(screen.getByText('添加'));
+    await user.keyboard('{Enter}');
     
     // Complete both todos
     const checkboxes = screen.getAllByRole('checkbox');
@@ -974,39 +1225,40 @@ describe('TodoApp Integration Tests', () => {
 </div>
 
 ---
+layout: section
+class: text-center
+---
 
+# 第四部分
+## AI 辅助单元测试
 
-# 测试最佳实践
+---
+
+# AI 辅助测试的优势
 
 <div class="grid grid-cols-2 gap-8 pt-4">
 
 <div>
 
-## 🎯 编写好测试的原则
+## 🤖 AI 的优势
 
 <v-click>
 
-### F.I.R.S.T 原则
-
-- **Fast** - 快速执行
-- **Independent** - 测试间独立
-- **Repeatable** - 可重复执行
-- **Self-Validating** - 自我验证
-- **Timely** - 及时编写
+- ⚡ **快速生成** - 几秒钟生成完整的测试用例
+- 🎯 **覆盖全面** - 自动考虑边界条件和异常情况
+- ✨ **代码质量** - 遵循最佳实践和测试模式
+- 📚 **学习辅助** - 通过 AI 生成的测试学习测试技巧
 
 </v-click>
 
 <v-click>
 
-### 测试命名
+## 🎯 适用场景
 
-```javascript
-// ❌ 不好的命名
-test('test1', () => {});
-
-// ✅ 好的命名
-test('should return sum when adding two positive numbers', () => {});
-```
+- 🆕 **新功能开发** - 为新组件快速生成测试
+- 🔄 **重构代码** - 为重构后的代码生成测试
+- 📖 **学习测试** - 学习如何为特定功能编写测试
+- ⚡ **提高效率** - 减少重复性测试编写工作
 
 </v-click>
 
@@ -1014,47 +1266,27 @@ test('should return sum when adding two positive numbers', () => {});
 
 <div>
 
-## 🔧 实用技巧
+## ⚠️ 注意事项
 
 <v-click>
 
-### 测试覆盖率
-
-```bash
-# 生成覆盖率报告
-npm run test:coverage
-```
-
-目标：80%+ 的代码覆盖率
+- 👀 **需要审查** - AI 生成的测试需要人工审查和调整
+- 🧠 **理解代码** - AI 可能不完全理解业务逻辑
+- ✅ **测试质量** - 确保测试真正验证了功能
+- 🔧 **维护成本** - 生成的测试也需要维护
 
 </v-click>
 
 <v-click>
 
-### Mock 使用
+## 🔧 最佳实践
 
 ```javascript
-// 模拟外部依赖
-vi.mock('./api', () => ({
-  fetchUser: vi.fn()
-}));
-
-// 模拟时间
-vi.useFakeTimers();
-```
-
-</v-click>
-
-<v-click>
-
-### 测试文件组织
-
-```
-src/
-  components/
-    Button.tsx
-    __tests__/
-      Button.test.tsx
+// 1. 提供清晰的代码上下文
+// 2. 明确测试目标和边界条件
+// 3. 审查和调整生成的测试
+// 4. 确保测试覆盖关键路径
+// 5. 利用 Cursor Rules 提升测试质量
 ```
 
 </v-click>
@@ -1065,94 +1297,7 @@ src/
 
 ---
 
-# 常见问题与解决方案
 
-<div class="grid grid-cols-2 gap-8 pt-4">
-
-<div>
-
-<v-click>
-
-### 1. 异步测试常见问题
-
-```javascript
-// ❌ 忘记 await
-test('async test', () => {
-  const result = fetchData(); // 没有 await
-  expect(result).toBe('data'); // 测试 Promise 对象
-});
-
-// ❌ 超时问题（默认5秒）
-test('slow async test', async () => {
-  const result = await verySlowFunction(); // 需要8秒
-  expect(result).toBe('success');
-});
-
-// ✅ 正确处理
-test('async test', async () => {
-  const result = await fetchData();
-  expect(result).toBe('data');
-}, 10000); // 设置超时时间
-```
-
-</v-click>
-
-<v-click>
-
-### 2. DOM 清理问题
-
-```javascript
-// ✅ 自动清理
-import { cleanup } from '@testing-library/react'
-
-afterEach(() => {
-  cleanup();
-});
-```
-
-</v-click>
-
-</div>
-
-<div>
-
-
-<v-click>
-
-### 3. 环境变量配置
-
-```javascript
-// vitest.config.ts
-export default defineConfig({
-  test: {
-    env: {
-      NODE_ENV: 'test'
-    }
-  }
-});
-```
-
-</v-click>
-
-<v-click>
-
-### 4. 样式和静态资源处理
-
-```javascript
-// vitest.config.ts
-export default defineConfig({
-  test: {
-    css: false, // 忽略 CSS
-    mockReset: true
-  }
-});
-```
-
-</v-click>
-
-</div>
-
-</div>
 
 ---
 layout: center
@@ -1187,10 +1332,11 @@ class: text-center
 
 ## 下一步行动
 
-- 🔧 在项目中引入 Vitest
+- ⚡ 在项目中引入 Vitest
 - 📝 为核心功能编写测试
 - 📊 设定覆盖率目标
 - 🔄 建立测试驱动开发流程
+- 📚 storybook + vitest browser test
 
 </div>
 

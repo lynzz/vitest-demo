@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TodoApp } from '../TodoApp';
 
@@ -19,7 +19,9 @@ describe('TodoApp Integration Tests', () => {
     await user.type(input, '学习 Vitest');
     await user.keyboard('{Enter}');
     
-    expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    });
     expect(input).toHaveValue('');
   });
 
@@ -32,14 +34,20 @@ describe('TodoApp Integration Tests', () => {
     await user.type(input, '学习 Vitest');
     await user.keyboard('{Enter}');
     
+    await waitFor(() => {
+      expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    });
+    
     // Toggle completion - use the first checkbox (not toggle-all)
     const checkboxes = screen.getAllByRole('checkbox');
     const todoCheckbox = checkboxes[1]; // Skip toggle-all checkbox
     await user.click(todoCheckbox);
     
     // Check if the todo has completed class
-    const listItem = screen.getByText('学习 Vitest').closest('li');
-    expect(listItem).toHaveClass('completed');
+    await waitFor(() => {
+      const listItem = screen.getByText('学习 Vitest').closest('li');
+      expect(listItem).toHaveClass('completed');
+    });
   });
 
   test('deletes todo when delete button is clicked', async () => {
@@ -51,13 +59,17 @@ describe('TodoApp Integration Tests', () => {
     await user.type(input, '学习 Vitest');
     await user.keyboard('{Enter}');
     
-    expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
+    });
     
     // Delete the todo
     const deleteButton = screen.getByRole('button');
     await user.click(deleteButton);
     
-    expect(screen.queryByText('学习 Vitest')).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText('学习 Vitest')).not.toBeInTheDocument();
+    });
   });
 
   test('edits todo text on double click', async () => {

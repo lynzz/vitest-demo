@@ -16,7 +16,8 @@ export default defineConfig({
         'coverage/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/types.ts'
+        '**/types.ts',
+        'src/utils/__tests__/asyncTesting.test.ts'
       ]
     }
   }
