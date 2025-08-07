@@ -40,7 +40,7 @@ transition: fade-out
 
 # 课程大纲
 
-<div class="grid grid-cols-1 gap-4 pt-4 -mb-6">
+<div class="grid grid-cols-2 gap-4 pt-4 -mb-6">
 
 <div v-click class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
   <div class="text-3xl mr-4">🧪</div>
@@ -1278,10 +1278,6 @@ class: text-center
 </div>
 
 </div>
-
----
-
-
 
 ---
 layout: center
