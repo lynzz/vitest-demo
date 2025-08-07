@@ -15,13 +15,132 @@ mdc: true
 lineNumbers: false
 ---
 
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.6s ease-out;
+}
+
+.animate-bounce {
+  animation: bounce 1s ease-in-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-rotate {
+  animation: rotate 2s linear infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  transition: box-shadow 0.3s ease;
+}
+
+/* canvas-confetti 会自动创建 canvas 元素 */
+</style>
+
 # React + Vitest 单元测试实践
 
+<div class="animate-fade-in-up">
 从基础概念到实际应用的完整指南
+</div>
 
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    开始学习之旅 <carbon:arrow-right class="inline"/>
+<div class="pt-12 animate-fade-in-up" style="animation-delay: 0.3s;">
+  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer hover-scale hover-glow" hover="bg-white bg-opacity-10">
+    开始学习之旅 <carbon:arrow-right class="inline animate-pulse"/>
   </span>
 </div>
 
@@ -42,32 +161,32 @@ transition: fade-out
 
 <div class="grid grid-cols-2 gap-4 pt-4 -mb-6">
 
-<div v-click class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-  <div class="text-3xl mr-4">🧪</div>
+<div v-click class="flex items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover-scale animate-slide-in-left">
+  <div class="text-3xl mr-4 animate-bounce">🧪</div>
   <div>
     <h3 class="font-bold text-lg">第一部分：Unit Test 基础</h3>
     <p class="text-sm opacity-70">什么是单元测试？为什么需要单元测试？</p>
   </div>
 </div>
 
-<div v-click class="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-  <div class="text-3xl mr-4">⚡</div>
+<div v-click class="flex items-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover-scale animate-slide-in-right">
+  <div class="text-3xl mr-4 animate-bounce">⚡</div>
   <div>
     <h3 class="font-bold text-lg">第二部分：Vitest 介绍</h3>
     <p class="text-sm opacity-70">现代化的测试框架，快速且强大</p>
   </div>
 </div>
 
-<div v-click class="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-  <div class="text-3xl mr-4">💻</div>
+<div v-click class="flex items-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover-scale animate-slide-in-left">
+  <div class="text-3xl mr-4 animate-bounce">💻</div>
   <div>
     <h3 class="font-bold text-lg">第三部分：实战演练</h3>
     <p class="text-sm opacity-70">从简单到复杂，循序渐进的实例</p>
   </div>
 </div>
 
-<div v-click class="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-  <div class="text-3xl mr-4">🤖</div>
+<div v-click class="flex items-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg hover-scale animate-slide-in-right">
+  <div class="text-3xl mr-4 animate-bounce">🤖</div>
   <div>
     <h3 class="font-bold text-lg">第四部分：AI 辅助测试</h3>
     <p class="text-sm opacity-70">利用 AI 工具和 Cursor Rules 提升测试效率</p>
@@ -82,7 +201,7 @@ class: text-center
 ---
 
 # 第一部分
-## Unit Test 基础概念
+## Unit Test 基础概念 <span class="animate-pulse">🧪</span>
 
 ---
 
@@ -90,7 +209,7 @@ class: text-center
 
 <div class="grid grid-cols-2 gap-8 pt-4">
 
-<div>
+<div class="animate-slide-in-left">
 
 ## 定义
 
@@ -113,7 +232,7 @@ class: text-center
 
 </div>
 
-<div v-click>
+<div v-click class="animate-slide-in-right">
 
 ## 测试金字塔
 
@@ -188,8 +307,8 @@ graph TD
 
 <div class="grid grid-cols-3 gap-4 pt-4">
 
-<div v-click class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-<h3 class="font-bold text-center text-blue-600 dark:text-blue-400">Arrange</h3>
+<div v-click class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover-scale animate-fade-in-up" style="animation-delay: 0.1s;">
+<h3 class="font-bold text-center text-blue-600 dark:text-blue-400 animate-pulse">Arrange</h3>
 <p class="text-sm text-center">准备阶段</p>
 <ul class="text-xs mt-2">
   <li>• 准备测试数据</li>
@@ -198,8 +317,8 @@ graph TD
 </ul>
 </div>
 
-<div v-click class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-<h3 class="font-bold text-center text-green-600 dark:text-green-400">Act</h3>
+<div v-click class="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg hover-scale animate-fade-in-up" style="animation-delay: 0.2s;">
+<h3 class="font-bold text-center text-green-600 dark:text-green-400 animate-pulse">Act</h3>
 <p class="text-sm text-center">执行阶段</p>
 <ul class="text-xs mt-2">
   <li>• 调用被测试的方法</li>
@@ -208,8 +327,8 @@ graph TD
 </ul>
 </div>
 
-<div v-click class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-<h3 class="font-bold text-center text-purple-600 dark:text-purple-400">Assert</h3>
+<div v-click class="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover-scale animate-fade-in-up" style="animation-delay: 0.3s;">
+<h3 class="font-bold text-center text-purple-600 dark:text-purple-400 animate-pulse">Assert</h3>
 <p class="text-sm text-center">断言阶段</p>
 <ul class="text-xs mt-2">
   <li>• 验证执行结果</li>
@@ -222,7 +341,7 @@ graph TD
 
 <div v-click class="mt-6">
 
-```javascript
+```javascript {class: "animate-fade-in-up hover-scale"}
 test('should add two numbers correctly', () => {
   // Arrange - 准备测试数据
   const a = 2, b = 3;
@@ -243,7 +362,7 @@ class: text-center
 ---
 
 # 第二部分
-## Vitest 介绍
+## Vitest 介绍 <span class="animate-pulse">⚡</span>
 
 ---
 
@@ -251,7 +370,7 @@ class: text-center
 
 <div class="grid grid-cols-2 gap-8 pt-4">
 
-<div>
+<div class="animate-slide-in-left">
 
 ## 🚀 现代化测试框架
 
@@ -274,7 +393,7 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 </div>
 
-<div v-click>
+<div v-click class="animate-slide-in-right">
 
 ## 与其他测试框架对比
 
@@ -302,10 +421,10 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 <v-click>
 
-- ⚡ **启动速度**: ~200ms vs ~800ms (快 3-4 倍)
-- 🏃 **内存占用**: ~75MB vs ~150MB (减少约 50%)
-- 🌐 **现代 API**: 更好的 ES6+ 和现代 Web API 支持
-- 🔧 **维护性**: 活跃开发，定期更新
+- ⚡ **启动速度**: ~200ms vs ~800ms (快 3-4 倍) <span class="animate-pulse">🚀</span>
+- 🏃 **内存占用**: ~75MB vs ~150MB (减少约 50%) <span class="animate-pulse">💾</span>
+- 🌐 **现代 API**: 更好的 ES6+ 和现代 Web API 支持 <span class="animate-pulse">🌐</span>
+- 🔧 **维护性**: 活跃开发，定期更新 <span class="animate-pulse">🔧</span>
 
 </v-click>
 
@@ -317,7 +436,7 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 
 <v-click>
 
-```typescript
+```typescript {class: "animate-fade-in-up"}
 // 只需更改一行配置
 export default defineConfig({
   test: {
@@ -494,10 +613,10 @@ test('async test', async () => {
 
 <v-click>
 
-- 🧪 **隔离测试** - 避免外部依赖影响测试结果
-- 🎪 **控制行为** - 模拟函数返回值和异常情况
-- ✅ **验证调用** - 检查函数是否被正确调用
-- ⚡ **提高速度** - 避免真实的网络请求和数据库操作
+- 🧪 **隔离测试** - 避免外部依赖影响测试结果 <span class="animate-pulse">🔒</span>
+- 🎪 **控制行为** - 模拟函数返回值和异常情况 <span class="animate-pulse">🎪</span>
+- ✅ **验证调用** - 检查函数是否被正确调用 <span class="animate-pulse">✅</span>
+- ⚡ **提高速度** - 避免真实的网络请求和数据库操作 <span class="animate-pulse">⚡</span>
 
 </v-click>
 
@@ -577,7 +696,7 @@ class: text-center
 ---
 
 # 第三部分
-## 实战演练：从简单到复杂
+## 实战演练：从简单到复杂 <span class="animate-pulse">💻</span>
 
 ---
 
@@ -1214,7 +1333,7 @@ class: text-center
 ---
 
 # 第四部分
-## AI 辅助单元测试
+## AI 辅助单元测试 <span class="animate-pulse">🤖</span>
 
 ---
 
@@ -1228,10 +1347,10 @@ class: text-center
 
 <v-click>
 
-- ⚡ **快速生成** - 几秒钟生成完整的测试用例
-- 🎯 **覆盖全面** - 自动考虑边界条件和异常情况
-- ✨ **代码质量** - 遵循最佳实践和测试模式
-- 📚 **学习辅助** - 通过 AI 生成的测试学习测试技巧
+- ⚡ **快速生成** - 几秒钟生成完整的测试用例 <span class="animate-pulse">⚡</span>
+- 🎯 **覆盖全面** - 自动考虑边界条件和异常情况 <span class="animate-pulse">🎯</span>
+- ✨ **代码质量** - 遵循最佳实践和测试模式 <span class="animate-pulse">✨</span>
+- 📚 **学习辅助** - 通过 AI 生成的测试学习测试技巧 <span class="animate-pulse">📚</span>
 
 </v-click>
 
@@ -1288,20 +1407,20 @@ class: text-center
 
 <div class="grid grid-cols-3 gap-8 pt-8">
 
-<div v-click class="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-  <div class="text-4xl mb-4">🎯</div>
+<div v-click class="p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg hover-scale animate-fade-in-up" style="animation-delay: 0.1s;">
+  <div class="text-4xl mb-4 animate-bounce">🎯</div>
   <h3 class="font-bold text-lg mb-2">单元测试的价值</h3>
   <p class="text-sm opacity-70">提高代码质量，降低维护成本，增强开发信心</p>
 </div>
 
-<div v-click class="p-6 bg-green-50 dark:bg-green-900/20 rounded-lg">
-  <div class="text-4xl mb-4">⚡</div>
+<div v-click class="p-6 bg-green-50 dark:bg-green-900/20 rounded-lg hover-scale animate-fade-in-up" style="animation-delay: 0.2s;">
+  <div class="text-4xl mb-4 animate-bounce">⚡</div>
   <h3 class="font-bold text-lg mb-2">Vitest 的优势</h3>
   <p class="text-sm opacity-70">现代化、高性能、零配置的测试框架</p>
 </div>
 
-<div v-click class="p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-  <div class="text-4xl mb-4">🚀</div>
+<div v-click class="p-6 bg-purple-50 dark:bg-purple-900/20 rounded-lg hover-scale animate-fade-in-up" style="animation-delay: 0.3s;">
+  <div class="text-4xl mb-4 animate-bounce">🚀</div>
   <h3 class="font-bold text-lg mb-2">实践是关键</h3>
   <p class="text-sm opacity-70">从简单到复杂，逐步掌握测试技能</p>
 </div>
@@ -1327,11 +1446,127 @@ class: text-center
 
 # 谢谢大家！
 
-<div class="pt-12">
-  <span class="text-6xl">🎉</span>
+<div class="pt-12 animate-fade-in-up">
+  <span class="text-6xl animate-bounce">🎉</span>
 </div>
 
-<div class="pt-8">
+<!-- 使用 Slidev 支持的脚本方式 -->
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  // 动态加载canvas-confetti
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js'
+  script.onload = function() {
+    const confetti = window.confetti
+    
+    // 基础撒花效果
+    function fireConfetti() {
+      console.log('🎉 开始撒花！')
+      
+      const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#ff9f43', '#10ac84', '#2ed573', '#1e90ff', '#ffa502', '#ff6348', '#a55eea', '#26de81', '#fd79a8', '#ff4757', '#00d2d3'];
+      
+      // 主发射
+      confetti({
+        particleCount: 100,
+        spread: 80,
+        origin: { y: 0.5, x: 0.5 },
+        colors: colors,
+        shapes: ['circle', 'square'],
+        gravity: -0.4,
+        ticks: 600,
+        startVelocity: 60,
+        decay: 0.98,
+        angle: 90,
+        drift: 0
+      });
+      
+      // 延迟发射，创造连续效果
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.4, x: 0.5 },
+          colors: colors.slice(0, 10),
+          shapes: ['circle'],
+          gravity: -0.3,
+          ticks: 500,
+          startVelocity: 50,
+          decay: 0.97,
+          angle: 90
+        });
+      }, 200);
+      
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.6, x: 0.5 },
+          colors: colors.slice(10),
+          shapes: ['square'],
+          gravity: -0.3,
+          ticks: 500,
+          startVelocity: 50,
+          decay: 0.97,
+          angle: 90
+        });
+      }, 400);
+    }
+    
+    // 全局变量，避免重复撒花
+    let confettiInterval = null;
+    let isConfettiActive = false;
+    
+    // 检查当前是否在最后一页
+    function checkIfLastSlide() {
+      // 检查URL是否包含"22"
+      const currentUrl = window.location.href;
+      
+      console.log('当前URL:', currentUrl)
+      
+      // 检查URL是否包含"22"
+      const isLastPage = currentUrl.includes('22');
+      
+      if (isLastPage && !isConfettiActive) {
+        console.log('✅ 检测到第22页，开始撒花！')
+        isConfettiActive = true;
+        
+        // 立即开始撒花
+        fireConfetti();
+        
+        // 每3秒重复一次撒花效果
+        confettiInterval = setInterval(fireConfetti, 3000);
+      } else if (!isLastPage && isConfettiActive) {
+        console.log('❌ 离开第22页，停止撒花！')
+        isConfettiActive = false;
+        
+        // 清除定时器
+        if (confettiInterval) {
+          clearInterval(confettiInterval);
+          confettiInterval = null;
+        }
+      }
+    }
+    
+    // 页面加载完成后检查
+    checkIfLastSlide();
+    
+    // 监听页面变化（Slidev 页面切换）
+    const observer = new MutationObserver(() => {
+      checkIfLastSlide();
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+  document.head.appendChild(script)
+})
+</script>
+
+<div class="pt-8 animate-fade-in-up" style="animation-delay: 0.3s;">
 
 ## 继续学习资源
 
@@ -1341,6 +1576,6 @@ class: text-center
 
 </div>
 
-<div class="pt-8 opacity-50">
-<carbon:logo-github /> <a href="https://github.com/lynzz/vitest-demo">https://github.com/lynzz/vitest-demo</a>
+<div class="pt-8 opacity-50 animate-fade-in-up" style="animation-delay: 0.6s;">
+<carbon:logo-github class="animate-rotate" /> <a href="https://github.com/lynzz/vitest-demo" class="hover-glow">https://github.com/lynzz/vitest-demo</a>
 </div>
