@@ -3,20 +3,20 @@ import { renderHook } from '@testing-library/react'
 import { act } from 'react'
 import { useCounter } from '../useCounter'
 
-describe('useCounter Hook', () => {
-  test('initializes with default value', () => {
+describe('useCounter', () => {
+  test('should initialize with default value', () => {
     const { result } = renderHook(() => useCounter());
     
     expect(result.current.count).toBe(0);
   });
 
-  test('initializes with custom value', () => {
+  test('should initialize with custom value', () => {
     const { result } = renderHook(() => useCounter(10));
     
     expect(result.current.count).toBe(10);
   });
 
-  test('increments count', () => {
+  test('should increment count', () => {
     const { result } = renderHook(() => useCounter(0));
     
     act(() => {
@@ -26,7 +26,7 @@ describe('useCounter Hook', () => {
     expect(result.current.count).toBe(1);
   });
 
-  test('decrements count', () => {
+  test('should decrement count', () => {
     const { result } = renderHook(() => useCounter(5));
     
     act(() => {
@@ -36,7 +36,7 @@ describe('useCounter Hook', () => {
     expect(result.current.count).toBe(4);
   });
 
-  test('resets to initial value', () => {
+  test('should reset to initial value', () => {
     const { result } = renderHook(() => useCounter(3));
     
     act(() => {
@@ -53,7 +53,7 @@ describe('useCounter Hook', () => {
     expect(result.current.count).toBe(3);
   });
 
-  test('setCount updates value directly', () => {
+  test('should update value directly when setCount is called', () => {
     const { result } = renderHook(() => useCounter(0));
     
     act(() => {
@@ -63,7 +63,7 @@ describe('useCounter Hook', () => {
     expect(result.current.count).toBe(42);
   });
 
-  test('multiple operations work correctly', () => {
+  test('should handle multiple operations correctly', () => {
     const { result } = renderHook(() => useCounter(10));
     
     act(() => {
@@ -76,7 +76,7 @@ describe('useCounter Hook', () => {
     expect(result.current.count).toBe(20);
   });
 
-  test('functions are stable (memoized)', () => {
+  test('should maintain stable function references', () => {
     const { result, rerender } = renderHook(() => useCounter(0));
     
     const initialIncrement = result.current.increment;

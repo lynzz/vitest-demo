@@ -3,14 +3,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TodoApp } from '../TodoApp';
 
-describe('TodoApp Integration Tests', () => {
-  test('renders todo app with title', () => {
+describe('TodoApp', () => {
+  test('should render todo app with title', () => {
     render(<TodoApp />);
     
     expect(screen.getByText('todos')).toBeInTheDocument();
   });
 
-  test('adds new todo when form is submitted', async () => {
+  test('should add new todo when form is submitted', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -25,7 +25,7 @@ describe('TodoApp Integration Tests', () => {
     expect(input).toHaveValue('');
   });
 
-  test('toggles todo completion status', async () => {
+  test('should toggle todo completion status', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -50,7 +50,7 @@ describe('TodoApp Integration Tests', () => {
     });
   });
 
-  test('deletes todo when delete button is clicked', async () => {
+  test('should delete todo when delete button is clicked', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -72,7 +72,7 @@ describe('TodoApp Integration Tests', () => {
     });
   });
 
-  test('edits todo text on double click', async () => {
+  test('should edit todo text on double click', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -93,7 +93,7 @@ describe('TodoApp Integration Tests', () => {
     expect(screen.getByText('学习 React')).toBeInTheDocument();
   });
 
-  test('filters todos correctly', async () => {
+  test('should filter todos correctly', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -131,7 +131,7 @@ describe('TodoApp Integration Tests', () => {
     expect(screen.getByText(/学习 TypeScript/)).toBeInTheDocument();
   });
 
-  test('shows correct count of active todos', async () => {
+  test('should show correct count of active todos', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -152,7 +152,7 @@ describe('TodoApp Integration Tests', () => {
     expect(countElement).toBeInTheDocument();
   });
 
-  test('clears completed todos', async () => {
+  test('should clear completed todos', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -176,7 +176,7 @@ describe('TodoApp Integration Tests', () => {
     expect(screen.queryByText('学习 React')).not.toBeInTheDocument();
   });
 
-  test('does not show clear completed button when no completed todos', async () => {
+  test('should not show clear completed button when no completed todos', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -188,7 +188,7 @@ describe('TodoApp Integration Tests', () => {
     expect(screen.queryByText('Clear completed')).not.toBeInTheDocument();
   });
 
-  test('toggles all todos when toggle all is clicked', async () => {
+  test('should toggle all todos when toggle all is clicked', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     
@@ -214,7 +214,7 @@ describe('TodoApp Integration Tests', () => {
     expect(toggleAllCheckbox).not.toBeChecked();
   });
 
-  test('shows footer info', () => {
+  test('should show footer info', () => {
     render(<TodoApp />);
     
     expect(screen.getByText('Double-click to edit a todo')).toBeInTheDocument();
@@ -222,7 +222,7 @@ describe('TodoApp Integration Tests', () => {
     expect(screen.getByText('Part of')).toBeInTheDocument();
   });
 
-  test('handles multiple rapid additions', async () => {
+  test('should handle multiple rapid additions', async () => {
     const user = userEvent.setup();
     render(<TodoApp />);
     

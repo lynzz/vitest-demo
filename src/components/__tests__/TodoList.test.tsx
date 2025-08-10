@@ -9,8 +9,8 @@ const mockTodos = [
   { id: '3', text: '学习 TypeScript', completed: false }
 ];
 
-describe('TodoList Component', () => {
-  test('renders all todos', () => {
+describe('TodoList', () => {
+  test('should render all todos', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
@@ -27,7 +27,7 @@ describe('TodoList Component', () => {
     expect(screen.getByText('学习 TypeScript')).toBeInTheDocument();
   });
 
-  test('renders empty list when no todos', () => {
+  test('should render empty list when no todos', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
@@ -44,7 +44,7 @@ describe('TodoList Component', () => {
     expect(list.children).toHaveLength(0);
   });
 
-  test('calls onToggle when todo checkbox is clicked', async () => {
+  test('should call onToggle when todo checkbox is clicked', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -63,7 +63,7 @@ describe('TodoList Component', () => {
     expect(onToggle).toHaveBeenCalledWith('1');
   });
 
-  test('calls onDelete when delete button is clicked', async () => {
+  test('should call onDelete when delete button is clicked', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -82,7 +82,7 @@ describe('TodoList Component', () => {
     expect(onDelete).toHaveBeenCalledWith('1');
   });
 
-  test('calls onEdit when todo is edited', async () => {
+  test('should call onEdit when todo is edited', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -98,19 +98,18 @@ describe('TodoList Component', () => {
     );
     
     // Double click to enter edit mode
-    const firstTodoText = screen.getByText('学习 Vitest');
-    await user.dblClick(firstTodoText);
+    const todoText = screen.getByText('学习 Vitest');
+    await user.dblClick(todoText);
     
-    // Edit the text
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.clear(input);
-    await user.type(input, '学习 Vitest 测试');
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.type(editInput, '学习 Vitest 2.0');
     await user.keyboard('{Enter}');
     
-    expect(onEdit).toHaveBeenCalledWith('1', '学习 Vitest 测试');
+    expect(onEdit).toHaveBeenCalledWith('1', '学习 Vitest 2.0');
   });
 
-  test('renders correct number of todo items', () => {
+  test('should render correct number of todo items', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
@@ -126,7 +125,7 @@ describe('TodoList Component', () => {
     expect(todoItems).toHaveLength(3);
   });
 
-  test('has correct CSS class', () => {
+  test('should have correct CSS classes', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
@@ -140,32 +139,5 @@ describe('TodoList Component', () => {
     
     const list = screen.getByRole('list');
     expect(list).toHaveClass('todo-list');
-  });
-
-  test('passes onEdit prop to TodoItem components', async () => {
-    const user = userEvent.setup();
-    const onToggle = vi.fn();
-    const onDelete = vi.fn();
-    const onEdit = vi.fn();
-    
-    render(
-      <TodoList 
-        todos={mockTodos} 
-        onToggle={onToggle} 
-        onDelete={onDelete}
-        onEdit={onEdit}
-      />
-    );
-    
-    // Test that onEdit is passed down by trying to edit a todo
-    const firstTodoText = screen.getByText('学习 Vitest');
-    await user.dblClick(firstTodoText);
-    
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.clear(input);
-    await user.type(input, 'Updated task');
-    await user.keyboard('{Enter}');
-    
-    expect(onEdit).toHaveBeenCalledWith('1', 'Updated task');
   });
 }); 

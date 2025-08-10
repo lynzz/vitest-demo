@@ -10,15 +10,10 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'dist/',
-        'coverage/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/types.ts',
-        'src/utils/__tests__/asyncTesting.test.ts'
-      ]
-    }
+    },
+    include: [
+      'src/**/*.test.ts',
+      'src/**/*.test.tsx',
+    ],
   }
 }) 

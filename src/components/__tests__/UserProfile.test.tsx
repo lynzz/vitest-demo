@@ -12,13 +12,13 @@ vi.mock('../../services/api', () => ({
 // 导入 mock 的函数
 import { fetchUserData, saveUserData } from '../../services/api';
 
-describe('UserProfile Component', () => {
+describe('UserProfile', () => {
   beforeEach(() => {
     // 🔄 每个测试前重置 mock
     vi.clearAllMocks();
   });
 
-  test('displays user data when API call succeeds', async () => {
+  test('should display user data when API call succeeds', async () => {
     // 🎭 设置 mock 返回值
     const mockUser = { id: '1', name: '张三', email: 'zhang@example.com' };
     vi.mocked(fetchUserData).mockResolvedValue(mockUser);
@@ -33,7 +33,7 @@ describe('UserProfile Component', () => {
     expect(screen.getByText('zhang@example.com')).toBeInTheDocument();
   });
 
-  test('displays error when API call fails', async () => {
+  test('should display error when API call fails', async () => {
     // 🎭 模拟 API 错误
     vi.mocked(fetchUserData).mockRejectedValue(new Error('网络错误'));
 
@@ -44,7 +44,7 @@ describe('UserProfile Component', () => {
     });
   });
 
-  test('calls saveUserData when update button is clicked', async () => {
+  test('should call saveUserData when update button is clicked', async () => {
     const mockUser = { id: '1', name: '张三', email: 'zhang@example.com' };
     vi.mocked(fetchUserData).mockResolvedValue(mockUser);
     vi.mocked(saveUserData).mockResolvedValue(undefined);
@@ -66,7 +66,7 @@ describe('UserProfile Component', () => {
     });
   });
 
-  test('handles save error correctly', async () => {
+  test('should handle save error correctly', async () => {
     const mockUser = { id: '1', name: '张三', email: 'zhang@example.com' };
     vi.mocked(fetchUserData).mockResolvedValue(mockUser);
     vi.mocked(saveUserData).mockRejectedValue(new Error('保存失败'));
@@ -85,7 +85,7 @@ describe('UserProfile Component', () => {
     });
   });
 
-  test('shows loading state initially', () => {
+  test('should show loading state initially', () => {
     vi.mocked(fetchUserData).mockImplementation(() => 
       new Promise(() => {}) // 永不解析的 Promise
     );
@@ -95,7 +95,7 @@ describe('UserProfile Component', () => {
     expect(screen.getByText('加载中...')).toBeInTheDocument();
   });
 
-  test('shows user not found when API returns null', async () => {
+  test('should show user not found when API returns null', async () => {
     vi.mocked(fetchUserData).mockResolvedValue(null as any);
 
     render(<UserProfile />);

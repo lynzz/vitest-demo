@@ -27,3 +27,47 @@ You write concise, technical TypeScript and technical JavaScript codes with accu
 - Add JSDoc comments to describe the purpose of helper functions and reusable logic.
 - Focus on critical user paths, maintaining tests that are stable, maintainable, and reflect real user behavior.
 - Follow the guidance and best practices described on "https://playwright.dev/docs/writing-tests".
+
+## Test Naming and `test` Description Format
+
+- Use the "should ..." pattern for all unit tests.
+- Structure: "should <expected behavior>" optionally followed by context: "when/if/for <condition>".
+- Keep names concise, behavior-focused, and user-observable.
+
+### Examples
+
+- Component:
+  - should render tracking info when data is provided
+  - should render tables for failed and delivered events
+  - should format event time correctly
+
+- Page:
+  - should switch batch code when NotMatchRoute is confirmed
+  - should navigate back when back button is clicked
+
+- API/Service:
+  - should call createBatch with provided tracking number
+  - should not call createBatch when existing same-day batch is found
+
+- Hook:
+  - should filter out events with excluded event codes
+  - should sort events by descending timestamp
+
+### Good vs Bad
+
+- Good: should create a new batch when no history exists and then navigate
+- Good: should confirm and navigate when different day batch exists
+- Bad: create new batch
+- Bad: works correctly
+
+### Checklist
+
+- Starts with "should".
+- Describes expected outcome, not implementation details.
+- Adds context with "when/if/for" only when necessary.
+- Avoids redundant words and internal names.
+
+### Notes
+
+- Apply this format across all Vitest files: `**/*.test.tsx`, `**/*.test.ts`, `test/**/*`.
+- Keep test names stable and meaningful; prefer consistency with existing suites (e.g., `ScannerTracking.test.tsx`).

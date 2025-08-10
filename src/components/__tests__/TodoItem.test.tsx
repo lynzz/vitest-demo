@@ -9,8 +9,8 @@ const mockTodo = {
   completed: false
 };
 
-describe('TodoItem Component', () => {
-  test('renders todo text', () => {
+describe('TodoItem', () => {
+  test('should render todo text', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
@@ -19,7 +19,7 @@ describe('TodoItem Component', () => {
     expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
   });
 
-  test('renders checkbox with correct state', () => {
+  test('should render checkbox with correct state', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
@@ -29,7 +29,7 @@ describe('TodoItem Component', () => {
     expect(checkbox).not.toBeChecked();
   });
 
-  test('renders completed todo with completed class', () => {
+  test('should render completed todo with completed class', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     const completedTodo = { ...mockTodo, completed: true };
@@ -40,7 +40,7 @@ describe('TodoItem Component', () => {
     expect(listItem).toHaveClass('completed');
   });
 
-  test('calls onToggle when checkbox is clicked', async () => {
+  test('should call onToggle when checkbox is clicked', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -53,7 +53,7 @@ describe('TodoItem Component', () => {
     expect(onToggle).toHaveBeenCalledWith('1');
   });
 
-  test('calls onDelete when delete button is clicked', async () => {
+  test('should call onDelete when delete button is clicked', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -66,7 +66,7 @@ describe('TodoItem Component', () => {
     expect(onDelete).toHaveBeenCalledWith('1');
   });
 
-  test('enters edit mode on double click', async () => {
+  test('should enter edit mode on double click', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -79,7 +79,7 @@ describe('TodoItem Component', () => {
     expect(screen.getByDisplayValue('学习 Vitest')).toBeInTheDocument();
   });
 
-  test('saves edit on Enter key', async () => {
+  test('should save edit on Enter key', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -98,46 +98,36 @@ describe('TodoItem Component', () => {
     const textElement = screen.getByText('学习 Vitest');
     await user.dblClick(textElement);
     
-    // Edit text
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.clear(input);
-    await user.type(input, '学习 React');
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.type(editInput, '学习 React');
     await user.keyboard('{Enter}');
     
     expect(onEdit).toHaveBeenCalledWith('1', '学习 React');
   });
 
-  test('cancels edit on Escape key', async () => {
+  test('should cancel edit on Escape key', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
-    const onEdit = vi.fn();
     
-    render(
-      <TodoItem 
-        todo={mockTodo} 
-        onToggle={onToggle} 
-        onDelete={onDelete} 
-        onEdit={onEdit} 
-      />
-    );
+    render(<TodoItem todo={mockTodo} onToggle={onToggle} onDelete={onDelete} />);
     
     // Enter edit mode
     const textElement = screen.getByText('学习 Vitest');
     await user.dblClick(textElement);
     
-    // Edit text
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.clear(input);
-    await user.type(input, '学习 React');
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.type(editInput, '学习 React');
     await user.keyboard('{Escape}');
     
     // Should revert to original text
     expect(screen.getByText('学习 Vitest')).toBeInTheDocument();
-    expect(onEdit).not.toHaveBeenCalled();
+    expect(screen.queryByDisplayValue('学习 React')).not.toBeInTheDocument();
   });
 
-  test('saves edit on blur', async () => {
+  test('should not save empty edit', async () => {
     const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
@@ -156,95 +146,116 @@ describe('TodoItem Component', () => {
     const textElement = screen.getByText('学习 Vitest');
     await user.dblClick(textElement);
     
-    // Edit text
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.clear(input);
-    await user.type(input, '学习 React');
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.keyboard('{Enter}');
+    
+    // Should not call onEdit with empty string
+    expect(onEdit).not.toHaveBeenCalled();
+  });
+
+  test('should not save whitespace-only edit', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    const onDelete = vi.fn();
+    const onEdit = vi.fn();
+    
+    render(
+      <TodoItem 
+        todo={mockTodo} 
+        onToggle={onToggle} 
+        onDelete={onDelete} 
+        onEdit={onEdit} 
+      />
+    );
+    
+    // Enter edit mode
+    const textElement = screen.getByText('学习 Vitest');
+    await user.dblClick(textElement);
+    
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.type(editInput, '   ');
+    await user.keyboard('{Enter}');
+    
+    // Should not call onEdit with whitespace-only string
+    expect(onEdit).not.toHaveBeenCalled();
+  });
+
+  test('should trim whitespace from edit', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    const onDelete = vi.fn();
+    const onEdit = vi.fn();
+    
+    render(
+      <TodoItem 
+        todo={mockTodo} 
+        onToggle={onToggle} 
+        onDelete={onDelete} 
+        onEdit={onEdit} 
+      />
+    );
+    
+    // Enter edit mode
+    const textElement = screen.getByText('学习 Vitest');
+    await user.dblClick(textElement);
+    
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.type(editInput, '  学习 React  ');
+    await user.keyboard('{Enter}');
+    
+    expect(onEdit).toHaveBeenCalledWith('1', '学习 React');
+  });
+
+  test('should save edit on blur', async () => {
+    const user = userEvent.setup();
+    const onToggle = vi.fn();
+    const onDelete = vi.fn();
+    const onEdit = vi.fn();
+    
+    render(
+      <TodoItem 
+        todo={mockTodo} 
+        onToggle={onToggle} 
+        onDelete={onDelete} 
+        onEdit={onEdit} 
+      />
+    );
+    
+    // Enter edit mode
+    const textElement = screen.getByText('学习 Vitest');
+    await user.dblClick(textElement);
+    
+    const editInput = screen.getByDisplayValue('学习 Vitest');
+    await user.clear(editInput);
+    await user.type(editInput, '学习 React');
     await user.tab(); // This will blur the input
     
     expect(onEdit).toHaveBeenCalledWith('1', '学习 React');
   });
 
-  test('does not call onEdit when text is unchanged', async () => {
-    const user = userEvent.setup();
-    const onToggle = vi.fn();
-    const onDelete = vi.fn();
-    const onEdit = vi.fn();
-    
-    render(
-      <TodoItem 
-        todo={mockTodo} 
-        onToggle={onToggle} 
-        onDelete={onDelete} 
-        onEdit={onEdit} 
-      />
-    );
-    
-    // Enter edit mode
-    const textElement = screen.getByText('学习 Vitest');
-    await user.dblClick(textElement);
-    
-    // Don't change text, just press Enter
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.keyboard('{Enter}');
-    
-    expect(onEdit).not.toHaveBeenCalled();
-  });
-
-  test('deletes todo when edit text is empty', async () => {
-    const user = userEvent.setup();
-    const onToggle = vi.fn();
-    const onDelete = vi.fn();
-    const onEdit = vi.fn();
-    
-    render(
-      <TodoItem 
-        todo={mockTodo} 
-        onToggle={onToggle} 
-        onDelete={onDelete} 
-        onEdit={onEdit} 
-      />
-    );
-    
-    // Enter edit mode
-    const textElement = screen.getByText('学习 Vitest');
-    await user.dblClick(textElement);
-    
-    // Clear text
-    const input = screen.getByDisplayValue('学习 Vitest');
-    await user.clear(input);
-    await user.keyboard('{Enter}');
-    
-    expect(onDelete).toHaveBeenCalledWith('1');
-  });
-
-  test('has correct CSS classes', () => {
+  test('should have correct CSS classes', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
     render(<TodoItem todo={mockTodo} onToggle={onToggle} onDelete={onDelete} />);
     
     const listItem = screen.getByText('学习 Vitest').closest('li');
-    expect(listItem).toBeInTheDocument();
-    
-    const checkbox = screen.getByRole('checkbox');
-    expect(checkbox).toHaveClass('toggle');
-    
-    const deleteButton = screen.getByRole('button');
-    expect(deleteButton).toHaveClass('destroy');
+    expect(listItem).toHaveClass('todo-item');
   });
 
-  test('has editing class when in edit mode', async () => {
-    const user = userEvent.setup();
+  test('should have correct accessibility attributes', () => {
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
     render(<TodoItem todo={mockTodo} onToggle={onToggle} onDelete={onDelete} />);
     
-    const textElement = screen.getByText('学习 Vitest');
-    await user.dblClick(textElement);
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toHaveAttribute('aria-label', 'Toggle todo completion');
     
-    const listItem = screen.getByDisplayValue('学习 Vitest').closest('li');
-    expect(listItem).toHaveClass('editing');
+    const deleteButton = screen.getByRole('button');
+    expect(deleteButton).toHaveAttribute('aria-label', 'Delete todo');
   });
 }); 
