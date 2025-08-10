@@ -32,7 +32,7 @@ describe('useCounter', () => {
     act(() => {
       result.current.decrement();
     });
-    
+      
     expect(result.current.count).toBe(4);
   });
 

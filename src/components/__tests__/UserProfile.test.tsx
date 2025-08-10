@@ -28,9 +28,8 @@ describe('UserProfile', () => {
     // 等待异步操作完成
     await waitFor(() => {
       expect(screen.getByText('张三')).toBeInTheDocument();
+      expect(screen.getByText('zhang@example.com')).toBeInTheDocument();
     });
-
-    expect(screen.getByText('zhang@example.com')).toBeInTheDocument();
   });
 
   test('should display error when API call fails', async () => {

@@ -262,10 +262,9 @@ graph TD
 
 <div>
 
-## 🛡️ 质量保障
-
 <v-click>
 
+## 🛡️ 质量保障
 - 🐛 **及早发现bug** - 在开发阶段就发现问题
 - 🔄 **回归测试** - 确保修改不会破坏现有功能
 - ✨ **代码质量** - 促使编写更好的代码
@@ -285,9 +284,9 @@ graph TD
 
 <div>
 
-## 🔧 开发效率
-
 <v-click>
+
+## 🔧 开发效率
 
 - 🔨 **重构信心** - 安全地重构代码
 - ⚡ **快速反馈** - 立即知道代码是否正常工作
@@ -425,10 +424,6 @@ Vitest 是一个由 **Vite** 提供支持的极速单元测试框架
 - 🏃 **内存占用**: ~75MB vs ~150MB (减少约 50%) <span class="animate-pulse">💾</span>
 - 🌐 **现代 API**: 更好的 ES6+ 和现代 Web API 支持 <span class="animate-pulse">🌐</span>
 - 🔧 **维护性**: 活跃开发，定期更新 <span class="animate-pulse">🔧</span>
-
-</v-click>
-
-<v-click>
 
 </v-click>
 
@@ -1343,7 +1338,7 @@ class: text-center
 
 # AI 辅助测试的优势
 
-<div class="grid grid-cols-2 gap-8 pt-4">
+<div class="grid grid-cols-2 gap-2 pt-2">
 
 <div>
 
@@ -1351,10 +1346,10 @@ class: text-center
 
 <v-click>
 
-- ⚡ **快速生成** - 几秒钟生成完整的测试用例 <span class="animate-pulse">⚡</span>
-- 🎯 **覆盖全面** - 自动考虑边界条件和异常情况 <span class="animate-pulse">🎯</span>
-- ✨ **代码质量** - 遵循最佳实践和测试模式 <span class="animate-pulse">✨</span>
-- 📚 **学习辅助** - 通过 AI 生成的测试学习测试技巧 <span class="animate-pulse">📚</span>
+- ⚡ **快速生成** - 几秒钟生成完整的测试用例
+- 🎯 **覆盖全面** - 自动考虑边界条件和异常情况
+- ✨ **代码质量** - 遵循最佳实践和测试模式
+- 📚 **学习辅助** - 通过 AI 生成的测试学习测试技巧
 
 </v-click>
 
@@ -1388,13 +1383,11 @@ class: text-center
 
 ## 🔧 最佳实践
 
-```javascript
-// 1. 提供清晰的代码上下文
-// 2. 明确测试目标和边界条件
-// 3. 审查和调整生成的测试
-// 4. 确保测试覆盖关键路径
-// 5. 利用 Cursor Rules 提升测试质量
-```
+- 📝 **提供清晰的代码上下文** - 让 AI 理解代码结构和业务逻辑
+- 🎯 **明确测试目标和边界条件** - 确保测试覆盖所有重要场景
+- 👀 **审查和调整生成的测试** - 人工验证测试的准确性和完整性
+- 🛡️ **确保测试覆盖关键路径** - 重点测试核心功能和用户流程
+- ⚡ **利用 Cursor Rules 提升测试质量** - 遵循最佳实践和规范
 
 </v-click>
 
@@ -1438,7 +1431,6 @@ class: text-center
 - ⚡ 在项目中引入 Vitest
 - 📝 为核心功能编写测试
 - 📊 设定覆盖率目标
-- 🔄 建立测试驱动开发流程
 - 📚 storybook + vitest browser test
 
 </div>
