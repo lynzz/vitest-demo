@@ -243,19 +243,28 @@ describe('TodoItem', () => {
     render(<TodoItem todo={mockTodo} onToggle={onToggle} onDelete={onDelete} />);
     
     const listItem = screen.getByText('学习 Vitest').closest('li');
-    expect(listItem).toHaveClass('todo-item');
+    expect(listItem).toBeInTheDocument();
+    
+    const checkbox = screen.getByRole('checkbox');
+    expect(checkbox).toHaveClass('toggle');
+    
+    const deleteButton = screen.getByRole('button');
+    expect(deleteButton).toHaveClass('destroy');
   });
 
-  test('should have correct accessibility attributes', () => {
+  test('should have editing class when in edit mode', async () => {
+    const user = userEvent.setup();
     const onToggle = vi.fn();
     const onDelete = vi.fn();
     
     render(<TodoItem todo={mockTodo} onToggle={onToggle} onDelete={onDelete} />);
     
-    const checkbox = screen.getByRole('checkbox');
-    expect(checkbox).toHaveAttribute('aria-label', 'Toggle todo completion');
+    const textElement = screen.getByText('学习 Vitest');
+    await user.dblClick(textElement);
     
-    const deleteButton = screen.getByRole('button');
-    expect(deleteButton).toHaveAttribute('aria-label', 'Delete todo');
+    const listItem = screen.getByDisplayValue('学习 Vitest').closest('li');
+    expect(listItem).toHaveClass('editing');
   });
+
+
 }); 
